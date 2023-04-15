@@ -5,7 +5,10 @@
 
 namespace Orbits
 {
+	class Widget
+	{
 
+	};
 }
 
 #endif

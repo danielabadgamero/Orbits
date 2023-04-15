@@ -3,9 +3,12 @@
 
 #include "OrbitsCore.h"
 
-namespace Orbits::Screen
+namespace Orbits
 {
+	class Screen
+	{
 
+	};
 }
 
 #endif
