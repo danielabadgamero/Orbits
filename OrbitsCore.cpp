@@ -3,7 +3,6 @@
 #include <SDL_ttf.h>
 
 #include "OrbitsCore.h"
-#include "OrbitsWidget.h"
 
 void Orbits::init(const char* title)
 {
@@ -45,7 +44,6 @@ void Orbits::event()
 			}
 			break;
 		}
-		screens[currentScreen].handleEvent(&e);
 	}
 }
 
@@ -53,7 +51,6 @@ void Orbits::draw()
 {
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xFF);
 	SDL_RenderClear(renderer);
-	screens[currentScreen].draw();
 	SDL_RenderPresent(renderer);
 }
 
@@ -67,23 +64,9 @@ void Orbits::quit()
 	SDL_Quit();
 }
 
-Orbits::Screen::Screen(std::vector<Widget> widgets) : widgets{ widgets } {}
-
-void Orbits::Screen::draw()
-{
-	for (const Widget& widget : widgets)
-		widget.draw(renderer);
-}
-
-void Orbits::Screen::handleEvent(SDL_Event* e)
-{
-	for (Widget& widget : widgets)
-		widget.handleEvent(e);
-}
-
 int Orbits::loadScreens(void*)
 {
-	std::vector<Widget> homeWidgets{};
+
 
 	loadScreensThread.done = true;
 	return 0;
