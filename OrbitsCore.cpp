@@ -14,18 +14,18 @@ void Orbits::init(const char* title)
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, monitor.w, monitor.h, SDL_WINDOW_BORDERLESS | SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-	loadScreensThread.thread = SDL_CreateThread(loadScreens, "loadScreens", NULL);
-	while (!loadScreensThread.done)
+	loadThread.thread = SDL_CreateThread(load, "loadScreens", NULL);
+	while (!loadThread.done)
 	{
-		event();
+		handleEvents();
 		draw();
 	}
-	SDL_WaitThread(loadScreensThread.thread, NULL);
+	SDL_WaitThread(loadThread.thread, NULL);
 
 	running = true;
 }
 
-void Orbits::event()
+void Orbits::handleEvents()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -64,10 +64,10 @@ void Orbits::quit()
 	SDL_Quit();
 }
 
-int Orbits::loadScreens(void*)
+int Orbits::load(void*)
 {
 
 
-	loadScreensThread.done = true;
+	loadThread.done = true;
 	return 0;
 }

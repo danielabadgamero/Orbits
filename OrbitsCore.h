@@ -16,13 +16,13 @@ namespace Orbits
 	inline SDL_Window* window{};
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
-	inline Thread loadScreensThread{};
+	inline Thread loadThread{};
 
 	inline bool running{};
 
 	void init(const char*);
-	int loadScreens(void*);
-	void event();
+	int load(void*);
+	void handleEvents();
 	void draw();
 	void quit();
 }
