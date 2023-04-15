@@ -82,5 +82,8 @@ void Orbits::Screen::handleEvent(SDL_Event* e)
 
 int Orbits::loadScreens(void*)
 {
+	std::vector<Widget> homeWidgets{};
 
+	loadScreensThread.done = true;
+	return 0;
 }
