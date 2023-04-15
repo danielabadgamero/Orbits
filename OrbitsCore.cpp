@@ -29,7 +29,6 @@ void Orbits::handleEvents()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
-	{
 		switch (e.type)
 		{
 		case SDL_QUIT:
@@ -44,11 +43,13 @@ void Orbits::handleEvents()
 			}
 			break;
 		}
-	}
 }
 
 void Orbits::draw()
 {
+	for (Planet& planet : planets)
+		planet.move()
+
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xFF);
 	SDL_RenderClear(renderer);
 	SDL_RenderPresent(renderer);

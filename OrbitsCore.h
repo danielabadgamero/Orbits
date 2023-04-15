@@ -5,6 +5,8 @@
 
 #include <SDL.h>
 
+#include "Planet.h"
+
 namespace Orbits
 {
 	struct Thread
@@ -19,6 +21,7 @@ namespace Orbits
 	inline Thread loadThread{};
 
 	inline bool running{};
+	inline std::vector<Planet> planets{};
 
 	void init(const char*);
 	int load(void*);
