@@ -15,6 +15,13 @@ void Orbits::init(const char* title)
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, monitor.w, monitor.h, SDL_WINDOW_BORDERLESS | SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
+	loadScreensThread.thread = SDL_CreateThread(loadScreens, "loadScreens", NULL);
+	while (!loadScreensThread.done)
+	{
+
+	}
+	SDL_WaitThread(loadScreensThread.thread, NULL);
+
 	running = true;
 }
 
@@ -37,7 +44,7 @@ void Orbits::event()
 			}
 			break;
 		}
-		screens[currentScreen].event(&e);
+		screens[currentScreen].handleEvent(&e);
 	}
 }
 
@@ -67,8 +74,13 @@ void Orbits::Screen::draw()
 		widget.draw(renderer);
 }
 
-void Orbits::Screen::event(SDL_Event* e)
+void Orbits::Screen::handleEvent(SDL_Event* e)
 {
 	for (Widget& widget : widgets)
-		widget.event(e);
+		widget.handleEvent(e);
+}
+
+int Orbits::loadScreens(void*)
+{
+
 }

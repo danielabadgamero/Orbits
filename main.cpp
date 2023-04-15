@@ -6,7 +6,7 @@ int main(int, char**)
 
 	while (Orbits::running)
 	{
-		Orbits::event();
+		Orbits::handleEvents();
 		Orbits::draw();
 	}
 

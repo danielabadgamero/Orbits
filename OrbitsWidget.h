@@ -10,8 +10,13 @@ class Widget
 private:
 	std::string text{};
 	void* data{};
+	SDL_Color color{};
+	SDL_Point pos{};
+	double hAlign{};
+	double vAlign{};
+
 public:
-	virtual void event(SDL_Event*) = 0;
+	virtual void handleEvent(SDL_Event*) = 0;
 	virtual void draw(SDL_Renderer*) const = 0;
 };
 
