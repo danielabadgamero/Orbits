@@ -7,7 +7,8 @@ namespace Orbits
 {
 	class Screen
 	{
-
+	private:
+	public:
 	};
 }
 
