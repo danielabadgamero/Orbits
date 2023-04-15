@@ -35,8 +35,8 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom)
 	double zoomFactor{ 1.0 / static_cast<double>(zoom) };
 	SDL_Rect rect
 	{
-		static_cast<int>(pos.x),
-		static_cast<int>(pos.y),
+		static_cast<int>(zoomFactor * pos.x),
+		static_cast<int>(zoomFactor * pos.y),
 		static_cast<int>(zoomFactor * radius) * 2,
 		static_cast<int>(zoomFactor * radius) * 2
 	};
