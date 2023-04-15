@@ -24,7 +24,7 @@ namespace Orbits
 	inline double prevTime{};
 	inline double currTime{};
 	inline bool running{};
-	inline double zoom{};
+	inline int zoom{};
 	inline std::vector<Planet> planets{};
 
 	void init(const char*);

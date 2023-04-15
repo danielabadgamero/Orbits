@@ -69,7 +69,7 @@ void Orbits::quit()
 
 int Orbits::load(void*)
 {
-
+	planetTexture = IMG_LoadTexture(renderer, "ball.png");
 
 	loadThread.done = true;
 	return 0;

@@ -4,9 +4,9 @@
 
 #include "Planet.h"
 
-Planet::Planet(Planet* parent, double mass, double initSpeed, double radius, SDL_Color color) : parent{ parent }, mass{ mass }, color{ color }
+Planet::Planet(Planet* parent, double mass, double radius, double dist, double initSpeed, SDL_Color color) : parent{ parent }, mass{ mass }, color{ color }, radius{ radius }
 {
-	pos.x = radius;
+	pos.x = dist;
 	vel.y = initSpeed;
 }
 
@@ -30,7 +30,18 @@ void Planet::move(double dt, std::vector<Planet>& planets)
 	pos.y += vel.y * dt;
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom)
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom)
 {
-
+	double zoomFactor{ 1.0 / static_cast<double>(zoom) };
+	SDL_Rect rect
+	{
+		static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
+		static_cast<int>(zoomFactor * radius) * 2,
+		static_cast<int>(zoomFactor * radius) * 2
+	};
+	rect.x -= rect.w / 2;
+	rect.y -= rect.h / 2;
+	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
