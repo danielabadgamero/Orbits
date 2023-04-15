@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 
 #include "OrbitsCore.h"
+#include "OrbitsWidget.h"
 
 void Orbits::init(const char* title)
 {
@@ -21,6 +22,7 @@ void Orbits::event()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
+	{
 		switch (e.type)
 		{
 		case SDL_QUIT:
@@ -35,12 +37,15 @@ void Orbits::event()
 			}
 			break;
 		}
+		screens[currentScreen].event(&e);
+	}
 }
 
 void Orbits::draw()
 {
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xFF);
 	SDL_RenderClear(renderer);
+	screens[currentScreen].draw();
 	SDL_RenderPresent(renderer);
 }
 
@@ -52,4 +57,18 @@ void Orbits::quit()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+}
+
+Orbits::Screen::Screen(std::vector<Widget> widgets) : widgets{ widgets } {}
+
+void Orbits::Screen::draw()
+{
+	for (const Widget& widget : widgets)
+		widget.draw(renderer);
+}
+
+void Orbits::Screen::event(SDL_Event* e)
+{
+	for (Widget& widget : widgets)
+		widget.event(e);
 }

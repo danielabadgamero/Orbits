@@ -1,15 +1,18 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include "OrbitsCore.h"
+#include <string>
 
-namespace Orbits
+#include <SDL.h>
+
+class Widget
 {
-	class Widget
-	{
-	private:
-	public:
-	};
-}
+private:
+	std::string text{};
+	void* data{};
+public:
+	virtual void event(SDL_Event*) = 0;
+	virtual void draw(SDL_Renderer*) const = 0;
+};
 
 #endif

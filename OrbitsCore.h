@@ -5,18 +5,28 @@
 
 #include <SDL.h>
 
-#include "OrbitsScreen.h"
+#include "OrbitsWidget.h"
 
 namespace Orbits
 {
-	enum ScreenType
-	{
-		home,
-	};
-
 	inline SDL_Window* window{};
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
+
+	class Screen
+	{
+	private:
+		std::vector<Widget> widgets{};
+	public:
+		Screen(std::vector<Widget>);
+		virtual void draw();
+		virtual void event(SDL_Event*);
+	};
+
+	inline enum ScreenType
+	{
+		home,
+	} currentScreen{};
 
 	inline std::vector<Screen> screens{};
 

@@ -26,9 +26,6 @@
     <ClInclude Include="OrbitsCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitsScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OrbitsWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>

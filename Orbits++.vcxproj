@@ -144,7 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OrbitsCore.h" />
-    <ClInclude Include="OrbitsScreen.h" />
     <ClInclude Include="OrbitsWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
