@@ -42,6 +42,16 @@ void Orbits::handleEvents()
 				break;
 			}
 			break;
+		case SDL_MOUSEWHEEL:
+			camera.zoom += e.wheel.mouseY;
+			break;
+		case SDL_MOUSEMOTION:
+			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
+			{
+				camera.offset.x += e.motion.xrel;
+				camera.offset.y += e.motion.yrel;
+			}
+			break;
 		}
 }
 
@@ -49,11 +59,16 @@ void Orbits::draw()
 {
 	prevTime = currTime;
 	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
-	for (Planet& planet : planets)
-		planet.move(currTime - prevTime, planets);
 
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xFF);
 	SDL_RenderClear(renderer);
+
+	for (Planet& planet : planets)
+	{
+		planet.move(currTime - prevTime, planets);
+		planet.draw(renderer, planetTexture, camera.zoom, camera.offset);
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -70,6 +85,8 @@ void Orbits::quit()
 int Orbits::load(void*)
 {
 	planetTexture = IMG_LoadTexture(renderer, "ball.png");
+
+	planets.push_back(Planet{ 1.989e30, 696340, 0, 0, { 0xFD, 0xB8, 0x13 } });
 
 	loadThread.done = true;
 	return 0;

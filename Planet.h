@@ -11,14 +11,14 @@ class Planet
 {
 private:
 	double mass{};
-	double radius{};
+	int radius{};
 	SDL_FPoint pos{};
 	SDL_FPoint vel{};
 	SDL_Color color{};
 public:
-	Planet(double, double, double, double, SDL_Color);
+	Planet(double, int, double, double, SDL_Color);
 	void move(double, std::vector<Planet>&);
-	void draw(SDL_Renderer*, SDL_Texture*, int);
+	void draw(SDL_Renderer*, SDL_Texture*, int, SDL_Point);
 };
 
 #endif

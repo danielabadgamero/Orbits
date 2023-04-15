@@ -4,10 +4,10 @@
 
 #include "Planet.h"
 
-Planet::Planet(double mass, double radius, double dist, double initSpeed, SDL_Color color) : mass{ mass }, color{ color }, radius{ radius }
+Planet::Planet(double mass, int radius, double dist, double initSpeed, SDL_Color color) : mass{ mass }, color{ color }, radius{ radius }
 {
-	pos.x = dist;
-	vel.y = initSpeed;
+	pos.x = static_cast<float>(dist);
+	vel.y = static_cast<float>(initSpeed);
 }
 
 void Planet::move(double dt, std::vector<Planet>& planets)
@@ -16,18 +16,18 @@ void Planet::move(double dt, std::vector<Planet>& planets)
 	SDL_FPoint CG{};
 	for (const Planet& planet : planets)
 	{
-		CG.x += planet.pos.x * planet.mass;
-		CG.y += planet.pos.y * planet.mass;
+		CG.x += static_cast<float>(planet.pos.x * planet.mass);
+		CG.y += static_cast<float>(planet.pos.y * planet.mass);
 		totalMass += planet.mass;
 	}
-	CG.x /= totalMass;
-	CG.y /= totalMass;
+	CG.x /= static_cast<float>(totalMass);
+	CG.y /= static_cast<float>(totalMass);
 
-	vel.x += G * totalMass / std::pow(CG.x - pos.x, 2);
-	vel.y += G * totalMass / std::pow(CG.y - pos.y, 2);
+	vel.x += static_cast<float>(G * totalMass / std::pow(CG.x - pos.x, 2));
+	vel.y += static_cast<float>(G * totalMass / std::pow(CG.y - pos.y, 2));
 
-	pos.x += vel.x * dt;
-	pos.y += vel.y * dt;
+	pos.x += static_cast<float>(vel.x * dt);
+	pos.y += static_cast<float>(vel.y * dt);
 }
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom)
