@@ -18,7 +18,8 @@ void Orbits::init(const char* title)
 	loadScreensThread.thread = SDL_CreateThread(loadScreens, "loadScreens", NULL);
 	while (!loadScreensThread.done)
 	{
-
+		event();
+		draw();
 	}
 	SDL_WaitThread(loadScreensThread.thread, NULL);
 

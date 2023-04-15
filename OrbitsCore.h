@@ -21,6 +21,7 @@ namespace Orbits
 
 	inline enum ScreenType
 	{
+		loading,
 		home,
 	} currentScreen{};
 
