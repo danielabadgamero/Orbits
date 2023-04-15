@@ -29,5 +29,8 @@
     <ClInclude Include="OrbitsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OrbitsWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

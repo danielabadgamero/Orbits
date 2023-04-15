@@ -5,7 +5,7 @@
 
 namespace Orbits::Screen
 {
-	
+
 }
 
 #endif
