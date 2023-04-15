@@ -4,7 +4,7 @@
 
 #include "Planet.h"
 
-Planet::Planet(Planet* parent, double mass, double radius, double dist, double initSpeed, SDL_Color color) : parent{ parent }, mass{ mass }, color{ color }, radius{ radius }
+Planet::Planet(double mass, double radius, double dist, double initSpeed, SDL_Color color) : mass{ mass }, color{ color }, radius{ radius }
 {
 	pos.x = dist;
 	vel.y = initSpeed;
@@ -23,8 +23,8 @@ void Planet::move(double dt, std::vector<Planet>& planets)
 	CG.x /= totalMass;
 	CG.y /= totalMass;
 
-	vel.x += G * parent->mass / std::pow(CG.x - pos.x, 2);
-	vel.y += G * parent->mass / std::pow(CG.y - pos.y, 2);
+	vel.x += G * totalMass / std::pow(CG.x - pos.x, 2);
+	vel.y += G * totalMass / std::pow(CG.y - pos.y, 2);
 
 	pos.x += vel.x * dt;
 	pos.y += vel.y * dt;
