@@ -18,7 +18,7 @@ namespace Orbits
 	inline struct
 	{
 		SDL_Point offset{};
-		int zoom{};
+		double zoom{ 1e0 };
 	} camera{};
 
 	inline SDL_Window* window{};

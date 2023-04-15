@@ -23,14 +23,16 @@ void Planet::move(double dt, std::vector<Planet>& planets)
 	CG.x /= static_cast<float>(totalMass);
 	CG.y /= static_cast<float>(totalMass);
 
-	vel.x += static_cast<float>(G * totalMass / std::pow(CG.x - pos.x, 2));
-	vel.y += static_cast<float>(G * totalMass / std::pow(CG.y - pos.y, 2));
+	if (CG.x - pos.x != 0)
+		vel.x += static_cast<float>(dt * G * totalMass / std::pow(CG.x - pos.x, 2));
+	if (CG.y - pos.y != 0)
+		vel.y += static_cast<float>(dt * G * totalMass / std::pow(CG.y - pos.y, 2));
 
 	pos.x += static_cast<float>(vel.x * dt);
 	pos.y += static_cast<float>(vel.y * dt);
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom, SDL_Point offset)
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
 {
 	double zoomFactor{ 1.0 / static_cast<double>(zoom) };
 	SDL_Rect rect
@@ -40,6 +42,7 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom, SDL_Po
 		static_cast<int>(zoomFactor * radius) * 2,
 		static_cast<int>(zoomFactor * radius) * 2
 	};
+
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);

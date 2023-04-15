@@ -22,6 +22,8 @@ void Orbits::init(const char* title)
 	}
 	SDL_WaitThread(loadThread.thread, NULL);
 
+	planetTexture = IMG_LoadTexture(renderer, "ball.png");
+
 	running = true;
 }
 
@@ -43,7 +45,10 @@ void Orbits::handleEvents()
 			}
 			break;
 		case SDL_MOUSEWHEEL:
-			camera.zoom += e.wheel.mouseY;
+			if (e.wheel.y > 0)
+				camera.zoom /= 2;
+			else
+				camera.zoom *= 2;
 			break;
 		case SDL_MOUSEMOTION:
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
@@ -84,9 +89,8 @@ void Orbits::quit()
 
 int Orbits::load(void*)
 {
-	planetTexture = IMG_LoadTexture(renderer, "ball.png");
-
-	planets.push_back(Planet{ 1.989e30, 696340, 0, 0, { 0xFD, 0xB8, 0x13 } });
+	planets.push_back(Planet{ 1.989e30, 696340000, 0, 0, { 0xFD, 0xB8, 0x13 } });
+	planets.push_back(Planet{ 5.972e24, 6371000, 152.1e9, 29.29e3, { 0xFD, 0xB8, 0x13 } });
 
 	loadThread.done = true;
 	return 0;
