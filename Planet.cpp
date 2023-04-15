@@ -30,13 +30,13 @@ void Planet::move(double dt, std::vector<Planet>& planets)
 	pos.y += static_cast<float>(vel.y * dt);
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom)
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, int zoom, SDL_Point offset)
 {
 	double zoomFactor{ 1.0 / static_cast<double>(zoom) };
 	SDL_Rect rect
 	{
-		static_cast<int>(zoomFactor * pos.x),
-		static_cast<int>(zoomFactor * pos.y),
+		static_cast<int>(zoomFactor * pos.x) + offset.x,
+		static_cast<int>(zoomFactor * pos.y) + offset.y,
 		static_cast<int>(zoomFactor * radius) * 2,
 		static_cast<int>(zoomFactor * radius) * 2
 	};
