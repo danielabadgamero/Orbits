@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OrbitsCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Label.h" />
     <ClInclude Include="OrbitsCore.h" />
     <ClInclude Include="OrbitsWidget.h" />
   </ItemGroup>
