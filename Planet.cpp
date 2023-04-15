@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <SDL.h>
 
 #include "Planet.h"
@@ -8,7 +10,7 @@ Planet::Planet(Planet* parent, double mass, double initSpeed, double radius, SDL
 	vel.y = initSpeed;
 }
 
-void Planet::move(double dt, std::vector<Planet> planets)
+void Planet::move(double dt, std::vector<Planet>& planets)
 {
 	double totalMass{};
 	SDL_FPoint CG{};
@@ -20,4 +22,15 @@ void Planet::move(double dt, std::vector<Planet> planets)
 	}
 	CG.x /= totalMass;
 	CG.y /= totalMass;
+
+	vel.x += G * parent->mass / std::pow(CG.x - pos.x, 2);
+	vel.y += G * parent->mass / std::pow(CG.y - pos.y, 2);
+
+	pos.x += vel.x * dt;
+	pos.y += vel.y * dt;
+}
+
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom)
+{
+
 }

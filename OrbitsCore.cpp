@@ -47,8 +47,10 @@ void Orbits::handleEvents()
 
 void Orbits::draw()
 {
+	prevTime = currTime;
+	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
 	for (Planet& planet : planets)
-		planet.move()
+		planet.move(currTime - prevTime, planets);
 
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xFF);
 	SDL_RenderClear(renderer);

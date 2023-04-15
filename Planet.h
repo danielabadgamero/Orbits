@@ -17,8 +17,8 @@ private:
 	SDL_Color color{};
 public:
 	Planet(Planet*, double, double, double, SDL_Color);
-	void move(double, std::vector<Planet>);
-	void draw(SDL_Renderer*);
+	void move(double, std::vector<Planet>&);
+	void draw(SDL_Renderer*, SDL_Texture*, double);
 };
 
 #endif
