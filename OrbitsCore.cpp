@@ -1,6 +1,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_net.h>
+#include <SDL_ttf.h>
 
 #include "OrbitsCore.h"
 
@@ -8,7 +8,7 @@ void Orbits::init(const char* title)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
-	SDLNet_Init();
+	TTF_Init();
 
 	SDL_GetCurrentDisplayMode(0, &monitor);
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, monitor.w, monitor.h, SDL_WINDOW_BORDERLESS | SDL_WINDOW_SHOWN);
@@ -49,7 +49,7 @@ void Orbits::quit()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 
-	SDLNet_Quit();
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
