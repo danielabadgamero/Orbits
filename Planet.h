@@ -2,7 +2,6 @@
 #define PLANET_H
 
 #include <vector>
-#include <vector>
 
 #include <SDL.h>
 

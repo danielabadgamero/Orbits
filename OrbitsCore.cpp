@@ -52,6 +52,11 @@ void Orbits::handleEvents()
 					selectedValue = 0;
 				else
 					selectedValue++;
+				break;
+			case SDL_SCANCODE_BACKSPACE:
+				if (planets.size())
+					planets.pop_back();
+				break;
 			}
 			break;
 		case SDL_MOUSEWHEEL:
