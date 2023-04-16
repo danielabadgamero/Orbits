@@ -13,13 +13,13 @@ class Planet
 private:
 	double mass{};
 	SDL_Rect rect{};
-	SDL_Point pos{};
-	SDL_Point vel{};
+	SDL_FPoint pos{};
+	SDL_FPoint vel{};
 	SDL_Color color{};
-	std::vector<SDL_Point> places{};
+	std::vector<SDL_FPoint> places{};
 public:
-	Planet(double, SDL_Point, SDL_Point, SDL_Color);
-	void move(double, std::vector<Planet>&);
+	Planet(double, SDL_FPoint, SDL_FPoint, SDL_Color);
+	void move(double, std::vector<Planet>&, SDL_DisplayMode*);
 	SDL_Point getPos(double);
 	void draw(SDL_Renderer*, SDL_Texture*);
 };
