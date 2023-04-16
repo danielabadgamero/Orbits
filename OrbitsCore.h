@@ -18,7 +18,7 @@ namespace Orbits
 	inline struct
 	{
 		SDL_Point offset{};
-		double zoom{ 1e0 };
+		double zoom{ 1 };
 	} camera{};
 
 	inline SDL_Window* window{};
@@ -30,6 +30,8 @@ namespace Orbits
 	inline double prevTime{};
 	inline double currTime{};
 	inline bool running{};
+	inline int focus{};
+	inline int timeWarp{ 1 };
 	inline std::vector<Planet> planets{};
 
 	void init(const char*);

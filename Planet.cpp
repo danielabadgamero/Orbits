@@ -1,8 +1,15 @@
 #include <cmath>
+#include <vector>
+#include <algorithm>
 
 #include <SDL.h>
 
 #include "Planet.h"
+
+static double dist(SDL_FPoint a, SDL_FPoint b)
+{
+	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
+}
 
 Planet::Planet(double mass, int radius, double dist, double initSpeed, SDL_Color color) : mass{ mass }, color{ color }, radius{ radius }
 {
@@ -12,21 +19,19 @@ Planet::Planet(double mass, int radius, double dist, double initSpeed, SDL_Color
 
 void Planet::move(double dt, std::vector<Planet>& planets)
 {
-	double totalMass{};
-	SDL_FPoint CG{};
-	for (const Planet& planet : planets)
-	{
-		CG.x += static_cast<float>(planet.pos.x * planet.mass);
-		CG.y += static_cast<float>(planet.pos.y * planet.mass);
-		totalMass += planet.mass;
-	}
-	CG.x /= static_cast<float>(totalMass);
-	CG.y /= static_cast<float>(totalMass);
+	double ax{};
+	double ay{};
 
-	if (CG.x - pos.x != 0)
-		vel.x += static_cast<float>(dt * G * totalMass / std::pow(CG.x - pos.x, 2));
-	if (CG.y - pos.y != 0)
-		vel.y += static_cast<float>(dt * G * totalMass / std::pow(CG.y - pos.y, 2));
+	for (const Planet& planet : planets)
+		if (dist(planet.pos, pos))
+		{
+			double a{ G * planet.mass / std::pow(dist(planet.pos, pos), 2) };
+			ax += a / dist(planet.pos, pos) * (planet.pos.x - pos.x);
+			ay += a / dist(planet.pos, pos) * (planet.pos.y - pos.y);
+		}
+	
+	vel.x += static_cast<float>(ax * dt);
+	vel.y += static_cast<float>(ay * dt);
 
 	pos.x += static_cast<float>(vel.x * dt);
 	pos.y += static_cast<float>(vel.y * dt);
@@ -34,17 +39,21 @@ void Planet::move(double dt, std::vector<Planet>& planets)
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
 {
-	double zoomFactor{ 1.0 / static_cast<double>(zoom) };
 	SDL_Rect rect
 	{
-		static_cast<int>(zoomFactor * pos.x) + offset.x,
-		static_cast<int>(zoomFactor * pos.y) + offset.y,
-		static_cast<int>(zoomFactor * radius) * 2,
-		static_cast<int>(zoomFactor * radius) * 2
+		static_cast<int>(zoom * pos.x) - offset.x,
+		static_cast<int>(zoom * pos.y) - offset.y,
+		std::clamp(static_cast<int>(zoom * radius * 2), 10, INT_MAX),
+		std::clamp(static_cast<int>(zoom * radius * 2), 10, INT_MAX)
 	};
 
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
+}
+
+SDL_Point Planet::getPos(double zoom)
+{
+	return { static_cast<int>(zoom * pos.x), static_cast<int>(zoom * pos.y) };
 }
