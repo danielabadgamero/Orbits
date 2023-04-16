@@ -21,7 +21,7 @@ void Planet::move(double dt, std::vector<Planet>& planets, SDL_DisplayMode* moni
 	double ax{};
 	double ay{};
 
-	for (const Planet& planet : planets)
+	for (Planet& planet : planets)
 		if (dist(planet.pos, pos) > 10)
 		{
 			double a{ G * planet.mass / std::pow(dist(planet.pos, pos), 2) };
@@ -30,7 +30,10 @@ void Planet::move(double dt, std::vector<Planet>& planets, SDL_DisplayMode* moni
 		}
 		else if (dist(planet.pos, pos))
 		{
-			
+			vel.x *= static_cast<float>(std::sqrt(0.8));
+			vel.y *= static_cast<float>(std::sqrt(0.8));
+			planet.vel.x *= static_cast<float>(std::sqrt(0.8));
+			planet.vel.y *= static_cast<float>(std::sqrt(0.8));
 		}
 	
 	vel.x += static_cast<float>(ax * dt);
