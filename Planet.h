@@ -17,9 +17,8 @@ private:
 	SDL_Color color{};
 	std::vector<SDL_FPoint> places{};
 public:
-	Planet(double, SDL_FPoint, SDL_FPoint, SDL_Color);
+	Planet(double, int, SDL_FPoint, SDL_FPoint, SDL_Color);
 	void move(double, std::vector<Planet>&, SDL_DisplayMode*);
-	SDL_Point getPos(double);
 	void draw(SDL_Renderer*, SDL_Texture*);
 };
 

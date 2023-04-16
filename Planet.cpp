@@ -6,14 +6,19 @@
 
 #include "Planet.h"
 
+SDL_FPoint operator+(SDL_FPoint A, SDL_FPoint B)
+{
+	return { A.x + B.x, A.y + B.y };
+}
+
 static double dist(SDL_FPoint a, SDL_FPoint b)
 {
 	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
 }
 
-Planet::Planet(double mass, SDL_FPoint pos, SDL_FPoint vel, SDL_Color color) : mass{ mass }, pos{ pos }, vel{ vel }, color { color }
+Planet::Planet(double mass, int radius, SDL_FPoint pos, SDL_FPoint vel, SDL_Color color) : mass{ mass }, pos{ pos }, vel{ vel }, color { color }
 {
-	rect.w = rect.h = 10;
+	rect.w = rect.h = radius * 2;
 }
 
 void Planet::move(double dt, std::vector<Planet>& planets, SDL_DisplayMode* monitor)
@@ -22,7 +27,7 @@ void Planet::move(double dt, std::vector<Planet>& planets, SDL_DisplayMode* moni
 	double ay{};
 
 	for (Planet& planet : planets)
-		if (dist(planet.pos, pos) > 10)
+		if (dist(planet.pos + planet.vel, pos + vel) > (planet.rect.w + rect.w) / 2.0)
 		{
 			double a{ G * planet.mass / std::pow(dist(planet.pos, pos), 2) };
 			ax += a / dist(planet.pos, pos) * (planet.pos.x - pos.x);
@@ -30,25 +35,23 @@ void Planet::move(double dt, std::vector<Planet>& planets, SDL_DisplayMode* moni
 		}
 		else if (dist(planet.pos, pos))
 		{
-			vel.x *= static_cast<float>(std::sqrt(0.8));
-			vel.y *= static_cast<float>(std::sqrt(0.8));
-			planet.vel.x *= static_cast<float>(std::sqrt(0.8));
-			planet.vel.y *= static_cast<float>(std::sqrt(0.8));
+			double dir{};
+			dir;
 		}
 	
 	vel.x += static_cast<float>(ax * dt);
 	vel.y += static_cast<float>(ay * dt);
 
-	if (pos.x + vel.x * dt < 0 || pos.x + vel.x * dt > monitor->w - 5)
+	if (pos.x + vel.x * dt < rect.w / 2 || pos.x + vel.x * dt > monitor->w - rect.w / 2)
 		vel.x *= -1;
-	if (pos.y + vel.y * dt < 0 || pos.y + vel.y * dt > monitor->h - 5)
+	if (pos.y + vel.y * dt < rect.h / 2 || pos.y + vel.y * dt > monitor->h - rect.h / 2)
 		vel.y *= -1;
 
 	pos.x += static_cast<float>(vel.x * dt);
 	pos.y += static_cast<float>(vel.y * dt);
 
 	places.push_back(pos);
-	if (places.size() > 10000)
+	if (places.size() > 1000)
 		places.erase(places.begin());
 }
 
@@ -62,9 +65,4 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture)
 		SDL_RenderDrawLine(renderer, static_cast<int>(places[i].x), static_cast<int>(places[i].y), static_cast<int>(places[i + 1].x), static_cast<int>(places[i + 1].y));
 	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
-}
-
-SDL_Point Planet::getPos(double zoom)
-{
-	return { static_cast<int>(zoom * pos.x), static_cast<int>(zoom * pos.y) };
 }

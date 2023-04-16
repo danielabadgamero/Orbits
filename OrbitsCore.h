@@ -32,7 +32,7 @@ namespace Orbits
 	inline bool dragging{};
 
 	inline int decPosition{};
-	inline double values[4]{ 0, 0xff, 0xff, 0xff };
+	inline double values[5]{ 0, 5, 0xff, 0xff, 0xff };
 	inline int selectedValue{};
 
 	void init(const char*);

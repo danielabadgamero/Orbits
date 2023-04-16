@@ -48,7 +48,7 @@ void Orbits::handleEvents()
 				running = false;
 				break;
 			case SDL_SCANCODE_SPACE:
-				if (selectedValue == 3)
+				if (selectedValue == 4)
 					selectedValue = 0;
 				else
 					selectedValue++;
@@ -71,7 +71,7 @@ void Orbits::handleEvents()
 
 			if (values[selectedValue] < 0)
 				values[selectedValue] = 0;
-			if (selectedValue && values[selectedValue] > 0xff)
+			if (selectedValue > 1 && values[selectedValue] > 0xff)
 				values[selectedValue] = 0xff;
 			break;
 		}
@@ -91,7 +91,7 @@ void Orbits::handleEvents()
 			{
 				SDL_GetMouseState(&mouse.x, &mouse.y);
 				dragging = false;
-				planets.push_back(Planet{ values[0], mouseDown, { mouseDown.x - mouse.x, mouseDown.y - mouse.y }, { (Uint8)values[1], (Uint8)values[2], (Uint8)values[3] } });
+				planets.push_back(Planet{ values[0], (int)values[1], mouseDown, { mouseDown.x - mouse.x, mouseDown.y - mouse.y }, { (Uint8)values[2], (Uint8)values[3], (Uint8)values[4] } });
 			}
 			break;
 		}
@@ -119,21 +119,24 @@ void Orbits::draw()
 		text = "Mass: ";
 		break;
 	case 1:
-		text = "R: ";
+		text = "Radius: ";
 		break;
 	case 2:
-		text = "G: ";
+		text = "R: ";
 		break;
 	case 3:
+		text = "G: ";
+		break;
+	case 4:
 		text = "B: ";
 		break;
 	}
 
 	text.append(selectedValue ? std::to_string(static_cast<int>(values[selectedValue])) : std::to_string(values[selectedValue]));
 	SDL_Color color{ 0xff, 0xff, 0xff };
-	if (selectedValue)
-		color = { (Uint8)values[1], (Uint8)values[2], (Uint8)values[3] };
-	else
+	if (selectedValue > 1)
+		color = { (Uint8)values[2], (Uint8)values[3], (Uint8)values[4] };
+	else if (selectedValue == 0)
 		text.append(" (" + std::to_string(decPosition) + ")");
 	SDL_Surface* surface{ TTF_RenderText_Blended(font, text.c_str(), color) };
 	SDL_Texture* texture{ SDL_CreateTextureFromSurface(renderer, surface) };
