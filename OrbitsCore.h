@@ -2,8 +2,10 @@
 #define THUNDER_CORE
 
 #include <vector>
+#include <string>
 
 #include <SDL.h>
+#include <SDL_net.h>
 
 #include "Planet.h"
 
@@ -47,20 +49,43 @@ namespace Orbits
 	inline SDL_Window* window{};
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
-	inline SDL_Texture* planetTexture{};
 	inline SDL_Point mouse{};
 	inline SDL_Point savedPos{};
-	inline Thread loadThread{};
+	inline Thread planetLoadThread{};
+	inline IPaddress ip{};
+	inline TCPsocket socket{};
+	inline Thread imageLoadThread{};
+	inline SDL_Surface* images[total_planets]{};
 
 	inline double prevTime{};
 	inline double currTime{};
 	inline bool running{};
 	inline int focus{};
 	inline int timeWarp{ 1 };
+	inline std::vector<std::string> planetNames
+	{
+		"sun",
+		"mercury",
+		"venus",
+		"earth",
+		"moon",
+		"mars",
+		"phobos",
+		"deimos",
+		"jupiter",
+		"io",
+		"europa",
+		"ganeymede",
+		"callisto",
+		"saturn",
+		"uranus",
+		"neptune"
+	};
 	inline Planet* planets[total_planets]{};
 
 	void init(const char*);
-	int load(void*);
+	int loadPlanets(void*);
+	int loadImages(void*);
 	void handleEvents();
 	void draw();
 	void quit();

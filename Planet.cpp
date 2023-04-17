@@ -43,7 +43,7 @@ void Planet::move(double dt)
 	pos.y = static_cast<float>(a * sin(E) * sqrt(1 - pow(e, 2))) + parent->pos.y;
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_FPoint offset)
+void Planet::draw(SDL_Renderer* renderer, SDL_Surface* surface, double zoom, SDL_FPoint offset)
 {
 	SDL_Rect rect
 	{
@@ -55,7 +55,9 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 
+	SDL_Texture* texture{ SDL_CreateTextureFromSurface(renderer, surface) };
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
+	SDL_DestroyTexture(texture);
 }
 
 SDL_FPoint Planet::getPos(double zoom)
