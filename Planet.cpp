@@ -32,12 +32,12 @@ void Planet::move(double dt)
 	pos.y = static_cast<float>(a * sin(E) * sqrt(1 - pow(e, 2))) + parent->pos.y;
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_FPoint offset)
 {
 	SDL_Rect rect
 	{
-		rect.x = static_cast<int>(zoom * pos.x) - offset.x,
-		rect.y = static_cast<int>(zoom * pos.y) - offset.y,
+		rect.x = static_cast<int>(zoom * pos.x - offset.x),
+		rect.y = static_cast<int>(zoom * pos.y - offset.y),
 		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX),
 		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX)
 	};
@@ -48,7 +48,12 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 
-SDL_Point Planet::getPos(double zoom)
+SDL_FPoint Planet::getPos(double zoom)
 {
-	return { static_cast<int>(zoom * pos.x), static_cast<int>(zoom * pos.y) };
+	return { static_cast<float>(zoom * pos.x), static_cast<float>(zoom * pos.y) };
+}
+
+Planet* Planet::getParent()
+{
+	return parent;
 }

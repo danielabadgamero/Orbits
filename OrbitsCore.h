@@ -26,14 +26,16 @@ namespace Orbits
 
 	inline struct
 	{
-		SDL_Point offset{};
+		SDL_FPoint offset{};
 		double zoom{ 1 };
+		double zoomSpeed{ 1 };
 	} camera{};
 
 	inline SDL_Window* window{};
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
 	inline SDL_Texture* planetTexture{};
+	inline SDL_Point mouse{};
 	inline Thread loadThread{};
 
 	inline double prevTime{};

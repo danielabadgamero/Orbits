@@ -32,8 +32,6 @@ void Orbits::init(const char* title)
 void Orbits::handleEvents()
 {
 	SDL_Event e;
-	int x;
-	int y;
 	while (SDL_PollEvent(&e))
 		switch (e.type)
 		{
@@ -59,28 +57,17 @@ void Orbits::handleEvents()
 			case SDL_SCANCODE_COMMA:
 				if (timeWarp > 9)
 					timeWarp /= 10;
+				break;
 			}
 			break;
 		case SDL_MOUSEWHEEL:
-			SDL_GetMouseState(&x, &y);
 			if (e.wheel.y > 0)
-			{
-				camera.zoom *= 2;
-				camera.offset.x *= 2;
-				camera.offset.y *= 2;
-				camera.offset.x += x;
-				camera.offset.y += y;
-			}
+				camera.zoomSpeed *= 1.1;
 			else
-			{
-				camera.zoom /= 2;
-				camera.offset.x -= x;
-				camera.offset.y -= y;
-				camera.offset.x /= 2;
-				camera.offset.y /= 2;
-			}
+				camera.zoomSpeed /= 1.1;
 			break;
 		case SDL_MOUSEMOTION:
+			SDL_GetMouseState(&mouse.x, &mouse.y);
 			if (focus)
 				break;
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
@@ -98,6 +85,23 @@ void Orbits::draw()
 	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
 	double dt{ currTime - prevTime };
 
+	camera.zoom *= camera.zoomSpeed;
+	if (camera.zoomSpeed > 1)
+	{
+		camera.offset.x *= static_cast<float>(camera.zoomSpeed);
+		camera.offset.y *= static_cast<float>(camera.zoomSpeed);
+		camera.offset.x += mouse.x;
+		camera.offset.y += mouse.y;
+	}
+	else if (camera.zoomSpeed < 1)
+	{
+		camera.offset.x -= mouse.x;
+		camera.offset.y -= mouse.y;
+		camera.offset.x *= static_cast<float>(camera.zoomSpeed);
+		camera.offset.y *= static_cast<float>(camera.zoomSpeed);
+	}
+	camera.zoomSpeed = sqrt(camera.zoomSpeed);
+
 	for (int i{}; i != total_planets; i++)
 	{
 		planets[i]->move(dt * timeWarp);
@@ -109,7 +113,8 @@ void Orbits::draw()
 	SDL_RenderClear(renderer);
 
 	for (int i{}; i != total_planets; i++)
-		planets[i]->draw(renderer, planetTexture, camera.zoom, camera.offset);
+		if (focus || i == sun || planets[i]->getParent() == planets[sun] || camera.zoom >= 1e-6)
+			planets[i]->draw(renderer, planetTexture, camera.zoom, camera.offset);
 
 	SDL_RenderPresent(renderer);
 }
