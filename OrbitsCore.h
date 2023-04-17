@@ -37,9 +37,12 @@ namespace Orbits
 
 	inline struct
 	{
-		SDL_FPoint offset{};
-		double zoomSpeed{ 1 };
-		double zoom{ 1e-10 };
+		double dist{ 5e10 };
+		double pitch{};
+		double yaw{};
+		int focus{};
+		double speed{ 1 };
+		double fov{ 90 };
 	} camera{};
 
 	inline SDL_Window* window{};

@@ -25,8 +25,6 @@ void Orbits::init(const char* title)
 	SDL_WaitThread(loadThread.thread, NULL);
 
 	planetTexture = IMG_LoadTexture(renderer, "ball.png");
-	camera.offset.x -= monitor.w / 2.0f;
-	camera.offset.y -= monitor.h / 2.0f;
 
 	running = true;
 }
@@ -74,18 +72,16 @@ void Orbits::handleEvents()
 		case SDL_MOUSEWHEEL:
 			savedPos = mouse;
 			if (e.wheel.y > 0)
-				camera.zoomSpeed *= 1.05;
+				camera.speed /= 1.05;
 			else
-				camera.zoomSpeed /= 1.05;
+				camera.speed *= 1.05;
 			break;
 		case SDL_MOUSEMOTION:
 			SDL_GetMouseState(&mouse.x, &mouse.y);
-			if (focus)
-				break;
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
 			{
-				camera.offset.x -= static_cast<float>(e.motion.xrel);
-				camera.offset.y -= static_cast<float>(e.motion.yrel);
+				camera.yaw += static_cast<float>(e.motion.xrel);
+				camera.pitch += static_cast<float>(e.motion.yrel);
 			}
 			break;
 		}
@@ -97,38 +93,19 @@ void Orbits::draw()
 	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
 	double dt{ currTime - prevTime };
 
-	camera.zoom *= camera.zoomSpeed;
-	if (camera.zoomSpeed > 1)
-	{
-		camera.offset.x *= static_cast<float>(camera.zoomSpeed);
-		camera.offset.y *= static_cast<float>(camera.zoomSpeed);
-		camera.offset.x += static_cast<float>(savedPos.x * (camera.zoomSpeed - 1));
-		camera.offset.y += static_cast<float>(savedPos.y * (camera.zoomSpeed - 1));
-	}
-	else if (camera.zoomSpeed < 1)
-	{
-		camera.offset.x += static_cast<float>(savedPos.x * (camera.zoomSpeed - 1));
-		camera.offset.y += static_cast<float>(savedPos.y * (camera.zoomSpeed - 1));
-		camera.offset.x *= static_cast<float>(camera.zoomSpeed);
-		camera.offset.y *= static_cast<float>(camera.zoomSpeed);
-	}
-	camera.zoomSpeed = pow(camera.zoomSpeed, 0.9);
-	if (abs(camera.zoomSpeed - 1) < 1e-3)
-		camera.zoomSpeed = 1;
+	camera.dist *= camera.speed;
+	camera.speed = pow(camera.speed, 0.9);
+	if (abs(camera.speed - 1) < 1e-3)
+		camera.speed = 1;
 
 	for (int i{}; i != total_planets; i++)
-	{
 		planets[i]->move(dt * timeWarp);
-		if (focus == i && focus)
-			camera.offset = { planets[i]->getPos(camera.zoom).x - monitor.w / 2, planets[i]->getPos(camera.zoom).y - monitor.h / 2 };
-	}
 
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xff);
 	SDL_RenderClear(renderer);
 
 	for (int i{}; i != total_planets; i++)
-		if (focus || i == sun || planets[i]->getParent() == planets[sun] || camera.zoom >= 1e-6)
-			planets[i]->draw(renderer, planetTexture, camera.zoom, camera.offset);
+		planets[i]->draw(renderer, planetTexture, camera.fov, camera.dist, camera.pitch, camera.yaw, &monitor);
 
 	SDL_RenderPresent(renderer);
 }

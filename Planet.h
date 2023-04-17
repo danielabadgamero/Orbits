@@ -20,8 +20,7 @@ private:
 public:
 	Planet(Planet*, double, int, double, double, SDL_Color);
 	void move(double);
-	SDL_FPoint getPos(double);
-	void draw(SDL_Renderer*, SDL_Texture*, double, SDL_FPoint);
+	void draw(SDL_Renderer*, SDL_Texture*, double, double, double, double, SDL_DisplayMode*);
 	Planet* getParent();
 };
 

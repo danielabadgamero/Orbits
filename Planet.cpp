@@ -33,25 +33,27 @@ void Planet::move(double dt)
 	pos.y = static_cast<float>(a * sin(E) * sqrt(1 - pow(e, 2))) + parent->pos.y;
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_FPoint offset)
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double fov, double dist, double pitch, double yaw, SDL_DisplayMode* monitor)
 {
+	double x{ pos.x - dist * sin(yaw) * cos(pitch) };
+	double y{ pos.y - dist * cos(yaw) * cos(pitch) };
+	double z{ -dist * sin(pitch) }; z;
+
+	double beta{ atan((pos.y - y) / (pos.x - x)) };
+	double alpha{ yaw - beta - fov / 2 };
+
 	SDL_Rect rect
 	{
-		rect.x = static_cast<int>(zoom * pos.x - offset.x),
-		rect.y = static_cast<int>(zoom * pos.y - offset.y),
-		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX),
-		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX)
+		static_cast<int>(alpha / fov * monitor->w),
+		static_cast<int>(monitor->h / 2),
+		std::clamp(static_cast<int>(r / dist * 2), 10, INT_MAX),
+		std::clamp(static_cast<int>(r / dist * 2), 10, INT_MAX)
 	};
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 
 	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
-}
-
-SDL_FPoint Planet::getPos(double zoom)
-{
-	return { static_cast<float>(zoom * pos.x), static_cast<float>(zoom * pos.y) };
 }
 
 Planet* Planet::getParent()
