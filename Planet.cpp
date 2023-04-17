@@ -20,11 +20,14 @@ void Planet::move(double dt)
 	if (!parent)
 		return;
 	epoch += dt;
-	while (epoch > T)
-		epoch -= T;
-	double angle{ epoch / T };
-	pos.x = static_cast<float>(a * cos(angle)) + parent->pos.x;
-	pos.y = static_cast<float>(a * sin(angle)) + parent->pos.y;
+
+	double E{ M };
+	while (true)
+	{
+		const double dE{ (E - e * sin(E) - M) / (1 - e * cos(E)) };
+		E -= dE;
+		if (abs(dE) < 1e-6) break;
+	}
 }
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
