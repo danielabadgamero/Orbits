@@ -27,16 +27,28 @@ void Orbits::init(const char* title)
 
 	planetLoadThread.thread = SDL_CreateThread(loadPlanets, "loadPlanets", NULL);
 	imageLoadThread.thread = SDL_CreateThread(loadImages, "loadImages", NULL);
-	while (!planetLoadThread.done && !imageLoadThread.done)
+	while (!planetLoadThread.done || !imageLoadThread.done)
 	{
 		SDL_Event e;
 		while (SDL_PollEvent(&e));
 		if (images[progress])
 			progress++;
-		std::string msg{ "Loading " + planetNames[progress] };
+		std::string msg{ "Loading " + (planetNames[progress][0] + 0x20) + planetNames[progress] };
+		SDL_Surface* textSurface{ TTF_RenderText_Blended(font, msg.c_str(), { 0xff, 0x30, 0x30, 0xff }) };
+		SDL_Texture* renderTexture{ SDL_CreateTextureFromSurface(renderer, textSurface) };
+		SDL_Rect rect{ 20, monitor.h - 20 };
+		SDL_QueryTexture(renderTexture, NULL, NULL, &rect.w, &rect.h);
+		rect.y -= rect.h;
+
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, renderTexture, NULL, &rect);
+		SDL_RenderPresent(renderer);
+		SDL_FreeSurface(textSurface);
+		SDL_DestroyTexture(renderTexture);
 	}
 	SDL_WaitThread(planetLoadThread.thread, NULL);
 	SDL_WaitThread(imageLoadThread.thread, NULL);
+	TTF_CloseFont(font);
 
 	camera.offset.x -= monitor.w / 2.0f;
 	camera.offset.y -= monitor.h / 2.0f;
@@ -170,7 +182,7 @@ int Orbits::loadPlanets(void*)
 	planets[jupiter] = new Planet{ planets[sun], 1898.13e24, 71492000, 778.479e9, 0.0487, 34.40438 };
 	planets[io] = new Planet{ planets[jupiter], 893.2e20, 1821500, 421.8e6, 0.004, 0 };
 	planets[europa] = new Planet{ planets[jupiter], 480e20, 1560800, 671.1e6, 0.009, 0 };
-	planets[ganeymede] = new Planet{ planets[jupiter], 1481.9e20, 2631200, 1070.4e6, 0.001, 0 };
+	planets[ganymede] = new Planet{ planets[jupiter], 1481.9e20, 2631200, 1070.4e6, 0.001, 0 };
 	planets[callisto] = new Planet{ planets[jupiter], 1075.9e20, 2410300, 1882.7e6, 0.007, 0 };
 	planets[saturn] = new Planet{ planets[sun], 568.32e24, 60268000, 1432.041e9, 0.0520, 49.94432 };
 	planets[uranus] = new Planet{ planets[sun], 86.811e24, 25559000, 2867.043e9, 0.0469, 313.23218 };
