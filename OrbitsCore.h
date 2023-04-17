@@ -9,59 +9,10 @@
 
 #include "Planet.h"
 
+constexpr int totalPlanets{ 21 };
+
 namespace Orbits
 {
-	enum Planets
-	{
-		sun,
-		mercury,
-		venus,
-		earth,
-		moon,
-		mars,
-		phobos,
-		deimos,
-		jupiter,
-		io,
-		europa,
-		ganymede,
-		callisto,
-		saturn,
-		uranus,
-		neptune,
-
-		total_planets
-	};
-
-	struct Thread
-	{
-		bool done{};
-		SDL_Thread* thread{};
-	};
-
-	inline struct
-	{
-		SDL_FPoint offset{};
-		double zoomSpeed{ 1 };
-		double zoom{ 1e-10 };
-	} camera{};
-
-	inline SDL_Window* window{};
-	inline SDL_Renderer* renderer{};
-	inline SDL_DisplayMode monitor{};
-	inline SDL_Point mouse{};
-	inline SDL_Point savedPos{};
-	inline Thread planetLoadThread{};
-	inline IPaddress ip{};
-	inline TCPsocket socket{};
-	inline Thread imageLoadThread{};
-	inline SDL_Surface* images[total_planets]{};
-
-	inline double prevTime{};
-	inline double currTime{};
-	inline bool running{};
-	inline int focus{};
-	inline int timeWarp{ 1 };
 	inline std::vector<std::string> planetNames
 	{
 		"sun",
@@ -79,9 +30,44 @@ namespace Orbits
 		"callisto",
 		"saturn",
 		"uranus",
-		"neptune"
+		"neptune",
+		"ceres",
+		"eris",
+		"haumea",
+		"makemake",
+		"pluto"
 	};
-	inline Planet* planets[total_planets]{};
+
+	struct Thread
+	{
+		bool done{};
+		SDL_Thread* thread{};
+	};
+
+	inline struct
+	{
+		SDL_FPoint offset{};
+		double zoomSpeed{ 1 };
+		double zoom{ 1e-9 };
+	} camera{};
+
+	inline SDL_Window* window{};
+	inline SDL_Renderer* renderer{};
+	inline SDL_DisplayMode monitor{};
+	inline SDL_Point mouse{};
+	inline SDL_Point savedPos{};
+	inline Thread planetLoadThread{};
+	inline IPaddress ip{};
+	inline TCPsocket socket{};
+	inline Thread imageLoadThread{};
+	inline SDL_Surface* images[totalPlanets]{};
+
+	inline double prevTime{};
+	inline double currTime{};
+	inline bool running{};
+	inline int focus{};
+	inline int timeWarp{ 1 };
+	inline Planet* planets[totalPlanets]{};
 
 	void init(const char*);
 	int loadPlanets(void*);

@@ -8,21 +8,13 @@
 
 #include "Planet.h"
 
-Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity, double lonJ2000)
+Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity)
 	: m{ mass }, r{ radius }, a{ semiMajor }, e{ eccentricity }
 {
 	parent = parentPlanet;
 	if (!parent) return;
 	double T{ 2 * M_PI * sqrt(pow(a, 3) / (G * parent->m)) };
 	n = 2 * M_PI / T;
-
-	std::istringstream in{ "2000-01-01" };
-	std::chrono::local_days tpd{};
-	in >> std::chrono::parse("%F", tpd);
-	int seconds{ (int)std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() -
-		(int)std::chrono::duration_cast<std::chrono::seconds>(tpd.time_since_epoch()).count() };
-
-	M = n * seconds + lonJ2000;
 }
 
 void Planet::move(double dt)
@@ -54,6 +46,8 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Surface* surface, double zoom, SDL
 	};
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
+
+	// SDL_Log("%d %d", rect.x, rect.y);
 
 	SDL_Texture* texture{ SDL_CreateTextureFromSurface(renderer, surface) };
 	SDL_RenderCopy(renderer, texture, NULL, &rect);

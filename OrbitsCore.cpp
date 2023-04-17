@@ -11,6 +11,11 @@
 
 #include "OrbitsCore.h"
 
+static int index(std::string name)
+{
+	return static_cast<int>(std::distance(Orbits::planetNames.begin(), std::find(Orbits::planetNames.begin(), Orbits::planetNames.end(), name)));
+}
+
 void Orbits::init(const char* title)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -34,7 +39,7 @@ void Orbits::init(const char* title)
 		SDL_Event e;
 		while (SDL_PollEvent(&e));
 		if (images[progress])
-			if (progress < total_planets - 1)
+			if (progress + 1 < planetNames.size())
 				progress++;
 		std::string msg{ "Loading " + planetNames[progress] };
 		SDL_Surface* textSurface{ TTF_RenderText_Blended(font, msg.c_str(), { 0xff, 0x30, 0x30, 0xff }) };
@@ -75,14 +80,14 @@ void Orbits::handleEvents()
 				running = false;
 				break;
 			case SDL_SCANCODE_UP:
-				if (focus + 1 == total_planets)
+				if (focus + 1 == totalPlanets)
 					focus = 0;
 				else
 					focus++;
 				break;
 			case SDL_SCANCODE_DOWN:
 				if (focus == 0)
-					focus = total_planets - 1;
+					focus = totalPlanets - 1;
 				else
 					focus--;
 				break;
@@ -144,7 +149,7 @@ void Orbits::draw()
 	if (abs(camera.zoomSpeed - 1) < 1e-3)
 		camera.zoomSpeed = 1;
 
-	for (int i{}; i != total_planets; i++)
+	for (int i{}; i != totalPlanets; i++)
 	{
 		planets[i]->move(dt * timeWarp);
 		if (focus == i && focus)
@@ -154,8 +159,8 @@ void Orbits::draw()
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xff);
 	SDL_RenderClear(renderer);
 
-	for (int i{}; i != total_planets; i++)
-		if (focus || i == sun || planets[i]->getParent() == planets[sun] || camera.zoom >= 1e-6)
+	for (int i{}; i != totalPlanets; i++)
+		if ((focus || i == index("sun") || planets[i]->getParent() == planets[index("sun")] || camera.zoom >= 1e-6) && i == focus)
 			planets[i]->draw(renderer, images[i], camera.zoom, camera.offset);
 
 	SDL_RenderPresent(renderer);
@@ -174,22 +179,27 @@ void Orbits::quit()
 
 int Orbits::loadPlanets(void*)
 {
-	planets[sun] = new Planet{ NULL, 1.989e30, 696340000, 0, 0, 0 };
-	planets[mercury] = new Planet{ planets[sun], 0.33010e24, 2440500, 57.909e9, 0.2056, 252.25084 };
-	planets[venus] = new Planet{ planets[sun], 4.8673e24, 6051800, 108.210e9, 0.0068, 181.97973 };
-	planets[earth] = new Planet{ planets[sun], 5.9722e24, 6378137, 149.598e9, 0.0167, 100.46435 };
-	planets[moon] = new Planet{ planets[earth], 0.07346e24, 1738100, 0.3844e9, 0.0549, 0 };
-	planets[mars] = new Planet{ planets[sun], 0.64169e24, 3396200, 227.956e9, 0.0935, 355.45332 };
-	planets[phobos] = new Planet{ planets[mars], 10.6e15, 13000, 9378e3, 0.0151, 0 };
-	planets[deimos] = new Planet{ planets[mars], 2.4e15, 7800, 23459e3, 0.0005, 0 };
-	planets[jupiter] = new Planet{ planets[sun], 1898.13e24, 71492000, 778.479e9, 0.0487, 34.40438 };
-	planets[io] = new Planet{ planets[jupiter], 893.2e20, 1821500, 421.8e6, 0.004, 0 };
-	planets[europa] = new Planet{ planets[jupiter], 480e20, 1560800, 671.1e6, 0.009, 0 };
-	planets[ganymede] = new Planet{ planets[jupiter], 1481.9e20, 2631200, 1070.4e6, 0.001, 0 };
-	planets[callisto] = new Planet{ planets[jupiter], 1075.9e20, 2410300, 1882.7e6, 0.007, 0 };
-	planets[saturn] = new Planet{ planets[sun], 568.32e24, 60268000, 1432.041e9, 0.0520, 49.94432 };
-	planets[uranus] = new Planet{ planets[sun], 86.811e24, 25559000, 2867.043e9, 0.0469, 313.23218 };
-	planets[neptune] = new Planet{ planets[sun], 102.409e24, 24764000, 4514.953e9, 0.0097, 304.88003 };
+	planets[index("sun")] = new Planet{ NULL, 1.989e30, 696340000, 0, 0 };
+	planets[index("mercury")] = new Planet{ planets[index("sun")], 0.33010e24, 2440500, 57.909e9, 0.2056 };
+	planets[index("venus")] = new Planet{ planets[index("sun")], 4.8673e24, 6051800, 108.210e9, 0.0068 };
+	planets[index("earth")] = new Planet{ planets[index("sun")], 5.9722e24, 6378137, 149.598e9, 0.0167 };
+	planets[index("moon")] = new Planet{ planets[index("earth")], 0.07346e24, 1738100, 0.3844e9, 0.0549 };
+	planets[index("mars")] = new Planet{ planets[index("sun")], 0.64169e24, 3396200, 227.956e9, 0.0935 };
+	planets[index("phobos")] = new Planet{ planets[index("mars")], 10.6e15, 13000, 9378e3, 0.0151 };
+	planets[index("deimos")] = new Planet{ planets[index("mars")], 2.4e15, 7800, 23459e3, 0.0005 };
+	planets[index("jupiter")] = new Planet{ planets[index("sun")], 1898.13e24, 71492000, 778.479e9, 0.0487 };
+	planets[index("io")] = new Planet{ planets[index("jupiter")], 893.2e20, 1821500, 421.8e6, 0.004 };
+	planets[index("europa")] = new Planet{ planets[index("jupiter")], 480e20, 1560800, 671.1e6, 0.009 };
+	planets[index("ganymede")] = new Planet{ planets[index("jupiter")], 1481.9e20, 2631200, 1070.4e6, 0.001 };
+	planets[index("callisto")] = new Planet{ planets[index("jupiter")], 1075.9e20, 2410300, 1882.7e6, 0.007 };
+	planets[index("saturn")] = new Planet{ planets[index("sun")], 568.32e24, 60268000, 1432.041e9, 0.0520 };
+	planets[index("uranus")] = new Planet{ planets[index("sun")], 86.811e24, 25559000, 2867.043e9, 0.0469 };
+	planets[index("neptune")] = new Planet{ planets[index("sun")], 102.409e24, 24764000, 4514.953e9, 0.0097 };
+	planets[index("ceres")] = new Planet{ planets[index("sun")], 939300e15, 961000, 4.14087e11, 0.0758 };
+	planets[index("eris")] = new Planet{ planets[index("sun")], 1.6466e22, 1163000, 1.015231e13, 0.43607 };
+	planets[index("haumea")] = new Planet{ planets[index("sun")], 4.006e22, 780000, 6.450062e12, 0.19642 };
+	planets[index("makemake")] = new Planet{ planets[index("sun")], 3.1e21, 715000, 6.79623e12, 0.16126 };
+	planets[index("pluto")] = new Planet{ planets[index("sun")], 0.01303e24, 1188000, 5869.656e9, 0.2444 };
 
 	planetLoadThread.done = true;
 	return 0;
@@ -220,25 +230,25 @@ static std::vector<char> getImage(std::string planet)
 	return response;
 }
 
-static void loadImage(Orbits::Planets name)
+static void loadImage(std::string name)
 {
-	std::string path{ "images/" + Orbits::planetNames[name] + ".png" };
+	std::string path{ "images/" + name + ".png" };
 	if (std::filesystem::exists(path))
-		Orbits::images[name] = IMG_Load(path.c_str());
+		Orbits::images[index(name)] = IMG_Load(path.c_str());
 	else
 	{
-		std::vector<char> img{ getImage(Orbits::planetNames[name]) };
+		std::vector<char> img{ getImage(name) };
 		SDL_RWops* data{ SDL_RWFromMem(img.data(), static_cast<int>(img.size())) };
-		Orbits::images[name] = IMG_LoadPNG_RW(data);
-		IMG_SavePNG(Orbits::images[name], path.c_str());
+		Orbits::images[index(name)] = IMG_LoadPNG_RW(data);
+		IMG_SavePNG(Orbits::images[index(name)], path.c_str());
 		SDL_RWclose(data);
 	}
 }
 
 int Orbits::loadImages(void*)
 {
-	for (int i{}; i != total_planets; i++)
-		loadImage(static_cast<Planets>(i));
+	for (const std::string& planet : planetNames)
+		loadImage(planet);
 
 	imageLoadThread.done = true;
 	return 0;
