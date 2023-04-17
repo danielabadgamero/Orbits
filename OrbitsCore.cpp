@@ -45,7 +45,7 @@ void Orbits::handleEvents()
 				running = false;
 				break;
 			case SDL_SCANCODE_UP:
-				if (planets, focus == total_planets)
+				if (focus == total_planets - 1)
 					focus = 0;
 				else
 					focus++;
