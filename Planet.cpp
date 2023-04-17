@@ -43,8 +43,8 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL
 	{
 		static_cast<int>(zoom * pos.x) - offset.x,
 		static_cast<int>(zoom * pos.y) - offset.y,
-		std::clamp(static_cast<int>(zoom * radius * 2), 10, INT_MAX),
-		std::clamp(static_cast<int>(zoom * radius * 2), 10, INT_MAX)
+		std::clamp(static_cast<int>(zoom * radius * 2), 10, 2000),
+		std::clamp(static_cast<int>(zoom * radius * 2), 10, 2000)
 	};
 
 	rect.x -= rect.w / 2;
