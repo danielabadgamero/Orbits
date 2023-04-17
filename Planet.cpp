@@ -6,45 +6,32 @@
 
 #include "Planet.h"
 
-static double dist(SDL_FPoint a, SDL_FPoint b)
+Planet::Planet(Planet* parent, double mass, int radius, double semiMajor, double period, SDL_Color color)
+	: m{ mass }, color{ color }, r{ radius }, parent{ parent }, a{ semiMajor }
 {
-	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
+	T = period * 27.3217;
 }
 
-Planet::Planet(double mass, int radius, double dist, double initSpeed, SDL_Color color) : mass{ mass }, color{ color }, radius{ radius }
+void Planet::move(double dt)
 {
-	pos.x = static_cast<float>(dist);
-	vel.y = static_cast<float>(initSpeed);
-}
-
-void Planet::move(double dt, std::vector<Planet>& planets)
-{
-	double ax{};
-	double ay{};
-
-	for (const Planet& planet : planets)
-		if (dist(planet.pos, pos))
-		{
-			double a{ G * planet.mass / std::pow(dist(planet.pos, pos), 2) };
-			ax += a / dist(planet.pos, pos) * (planet.pos.x - pos.x);
-			ay += a / dist(planet.pos, pos) * (planet.pos.y - pos.y);
-		}
-	
-	vel.x += static_cast<float>(ax * dt);
-	vel.y += static_cast<float>(ay * dt);
-
-	pos.x += static_cast<float>(vel.x * dt);
-	pos.y += static_cast<float>(vel.y * dt);
+	if (!parent)
+		return;
+	epoch += dt;
+	while (epoch > T)
+		epoch -= T;
+	double angle{ 2 * M_PI * epoch / T };
+	pos.x = static_cast<float>(a * cos(angle));
+	pos.y = static_cast<float>(a * sin(angle));
 }
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
 {
 	SDL_Rect rect
 	{
-		static_cast<int>(zoom * pos.x) - offset.x,
-		static_cast<int>(zoom * pos.y) - offset.y,
-		std::clamp(static_cast<int>(zoom * radius * 2), 10, 2000),
-		std::clamp(static_cast<int>(zoom * radius * 2), 10, 2000)
+		static_cast<int>(zoom * pos.x + (parent ? parent->pos.x : 0)) - offset.x,
+		static_cast<int>(zoom * pos.y + (parent ? parent->pos.y : 0)) - offset.y,
+		std::clamp(static_cast<int>(zoom * r * 2), 10, 2000),
+		std::clamp(static_cast<int>(zoom * r * 2), 10, 2000)
 	};
 
 	rect.x -= rect.w / 2;

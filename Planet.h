@@ -10,14 +10,17 @@ constexpr double G{ 6.67428e-11 };
 class Planet
 {
 private:
-	double mass{};
-	int radius{};
+	double m{};
+	int r{};
+	double a{};
+	double T{};
+	double epoch{};
 	SDL_FPoint pos{};
-	SDL_FPoint vel{};
 	SDL_Color color{};
+	Planet* parent{};
 public:
-	Planet(double, int, double, double, SDL_Color);
-	void move(double, std::vector<Planet>&);
+	Planet(Planet*, double, int, double, double, SDL_Color);
+	void move(double);
 	SDL_Point getPos(double);
 	void draw(SDL_Renderer*, SDL_Texture*, double, SDL_Point);
 };

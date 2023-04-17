@@ -53,7 +53,7 @@ void Orbits::handleEvents()
 					focus++;
 				break;
 			case SDL_SCANCODE_PERIOD:
-				if (timeWarp < 1000000)
+				if (timeWarp < 1000000000)
 				timeWarp *= 10;
 				break;
 			case SDL_SCANCODE_COMMA:
@@ -101,8 +101,7 @@ void Orbits::draw()
 
 	for (std::vector<Planet>::iterator planet{ planets.begin() }; planet != planets.end(); planet++)
 	{
-		if (dt < 0.02)
-			planet->move(dt * timeWarp, planets);
+		planet->move(dt * timeWarp);
 		if (focus == std::distance(planets.begin(), planet) && focus)
 			camera.offset = { planet->getPos(camera.zoom).x - monitor.w / 2, planet->getPos(camera.zoom).y - monitor.h / 2 };
 		planet->draw(renderer, planetTexture, camera.zoom, camera.offset);
@@ -124,15 +123,12 @@ void Orbits::quit()
 int Orbits::load(void*)
 {
 	// Sun
-	planets.push_back(Planet{ 1.989e30, 696340000, 0, 0, { 0xfd, 0xb8, 0x13 } });
+	planets.push_back(Planet{ NULL, 1.989e30, 696340000, 0, 0, { 0xfd, 0xb8, 0x13 } });
 
 	// Earth
-	planets.push_back(Planet{ 5.972e24, 6371000, 152.1e9, 29.29e3, { 0x4f, 0x4c, 0xb0 } });
+	planets.push_back(Planet{ &planets[0], 5.9722e24, 6378137, 149.598e9, 365.256 * 86400, { 0x00, 0x00, 0xa5 } });
 	// Moon
-	planets.push_back(Planet{ 0.07346e24, 1736000, 0.4055e9 + 152.1e9, 0.97e3 + 29.29e3, { 0xb8, 0xae, 0xa3 } });
-
-	// Jupiter
-	planets.push_back(Planet{ 1898.13e24, 71492000, 816.363e9, 12.44e3, { 0xac, 0x81, 0x81 } });
+	planets.push_back(Planet{ &planets[1], 0.07346e24, 1738100, 0.3844e9, 27.3217 * 86400, { 0xb8, 0xae, 0xa3 } });
 
 	loadThread.done = true;
 	return 0;
