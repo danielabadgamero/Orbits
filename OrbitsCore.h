@@ -25,6 +25,8 @@ namespace Orbits
 		ganeymede,
 		callisto,
 		saturn,
+		uranus,
+		neptune,
 
 		total_planets
 	};

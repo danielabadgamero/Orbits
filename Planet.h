@@ -15,10 +15,9 @@ private:
 	double e{};
 	double n{};
 	SDL_FPoint pos{};
-	SDL_Color color{};
 	Planet* parent{};
 public:
-	Planet(Planet*, double, int, double, double, SDL_Color);
+	Planet(Planet*, double, int, double, double, double);
 	void move(double);
 	SDL_FPoint getPos(double);
 	void draw(SDL_Renderer*, SDL_Texture*, double, SDL_FPoint);

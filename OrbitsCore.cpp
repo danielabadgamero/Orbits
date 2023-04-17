@@ -19,8 +19,8 @@ void Orbits::init(const char* title)
 	loadThread.thread = SDL_CreateThread(load, "loadScreens", NULL);
 	while (!loadThread.done)
 	{
-		handleEvents();
-		draw();
+		SDL_Event e;
+		while (SDL_PollEvent(&e));
 	}
 	SDL_WaitThread(loadThread.thread, NULL);
 
@@ -145,20 +145,22 @@ void Orbits::quit()
 
 int Orbits::load(void*)
 {
-	planets[sun] = new Planet{ NULL, 1.989e30, 696340000, 0, 0, { 0xfd, 0xb8, 0x13 } };
-	planets[mercury] = new Planet{ planets[sun], 0.33010e24, 2440500, 57.909e9, 0.2056, { 0xe5, 0xe5, 0xe5 } };
-	planets[venus] = new Planet{ planets[sun], 4.8673e24, 6051800, 108.210e9, 0.0068, { 0x8b, 0x7d, 0x82 } };
-	planets[earth] = new Planet{ planets[sun], 5.9722e24, 6378137, 149.598e9, 0.0167, { 0x00, 0x00, 0xa5 } };
-	planets[moon] = new Planet{ planets[earth], 0.07346e24, 1738100, 0.3844e9, 0.0549, { 0xb8, 0xae, 0xa3 } };
-	planets[mars] = new Planet{ planets[sun], 0.64169e24, 3396200, 227.956e9, 0.0935, { 0x9c, 0x2e, 0x35 } };
-	planets[phobos] = new Planet{ planets[mars], 10.6e15, 13000, 9378e3, 0.0151, { 0x5b, 0x4f, 0x49 } };
-	planets[deimos] = new Planet{ planets[mars], 2.4e15, 7800, 23459e3, 0.0005, { 0x9e, 0x8f, 0xb3 } };
-	planets[jupiter] = new Planet{ planets[sun], 1898.13e24, 71492000, 778.479e9, 0.0487, { 0xbc, 0xaf, 0xb2 } };
-	planets[io] = new Planet{ planets[jupiter], 893.2e20, 1821500, 421.8e6, 0.004, { 0xbc, 0xaf, 0xb2 } };
-	planets[europa] = new Planet{ planets[jupiter], 480e20, 1560800, 671.1e6, 0.009, { 0xbc, 0xaf, 0xb2 } };
-	planets[ganeymede] = new Planet{ planets[jupiter], 1481.9e20, 2631200, 1070.4e6, 0.001, { 0xbc, 0xaf, 0xb2 } };
-	planets[callisto] = new Planet{ planets[jupiter], 1075.9e20, 2410300, 1882.7e6, 0.007, { 0xbc, 0xaf, 0xb2 } };
-	planets[saturn] = new Planet{ planets[sun], 568.32e24, 60268000, 1432.041e9, 0.0520, { 0xea, 0xd6, 0xb8 } };
+	planets[sun] = new Planet{ NULL, 1.989e30, 696340000, 0, 0, 0 };
+	planets[mercury] = new Planet{ planets[sun], 0.33010e24, 2440500, 57.909e9, 0.2056, 252.25084 };
+	planets[venus] = new Planet{ planets[sun], 4.8673e24, 6051800, 108.210e9, 0.0068, 181.97973 };
+	planets[earth] = new Planet{ planets[sun], 5.9722e24, 6378137, 149.598e9, 0.0167, 100.46435 };
+	planets[moon] = new Planet{ planets[earth], 0.07346e24, 1738100, 0.3844e9, 0.0549, 0 };
+	planets[mars] = new Planet{ planets[sun], 0.64169e24, 3396200, 227.956e9, 0.0935, 355.45332 };
+	planets[phobos] = new Planet{ planets[mars], 10.6e15, 13000, 9378e3, 0.0151, 0 };
+	planets[deimos] = new Planet{ planets[mars], 2.4e15, 7800, 23459e3, 0.0005, 0 };
+	planets[jupiter] = new Planet{ planets[sun], 1898.13e24, 71492000, 778.479e9, 0.0487, 34.40438 };
+	planets[io] = new Planet{ planets[jupiter], 893.2e20, 1821500, 421.8e6, 0.004, 0 };
+	planets[europa] = new Planet{ planets[jupiter], 480e20, 1560800, 671.1e6, 0.009, 0 };
+	planets[ganeymede] = new Planet{ planets[jupiter], 1481.9e20, 2631200, 1070.4e6, 0.001, 0 };
+	planets[callisto] = new Planet{ planets[jupiter], 1075.9e20, 2410300, 1882.7e6, 0.007, 0 };
+	planets[saturn] = new Planet{ planets[sun], 568.32e24, 60268000, 1432.041e9, 0.0520, 49.94432 };
+	planets[uranus] = new Planet{ planets[sun], 86.811e24, 25559000, 2867.043e9, 0.0469, 313.23218 };
+	planets[neptune] = new Planet{ planets[sun], 102.409e24, 24764000, 4514.953e9, 0.0097, 304.88003 };
 
 	loadThread.done = true;
 	return 0;
