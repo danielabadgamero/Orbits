@@ -13,6 +13,7 @@ private:
 	double a{};
 	double M{};
 	double e{};
+	double n{};
 	SDL_FPoint pos{};
 	SDL_Color color{};
 	Planet* parent{};

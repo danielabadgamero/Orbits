@@ -5,12 +5,13 @@
 
 #include "Planet.h"
 
-static constexpr double G{ 6.6743e-11 };
-
 Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity, SDL_Color color)
 	: m{ mass }, color{ color }, r{ radius }, a{ semiMajor }, e{ eccentricity }
 {
 	parent = parentPlanet;
+	if (!parent) return;
+	double T{ 2 * M_PI * sqrt(pow(a, 3) / (G * parent->m)) };
+	n = 2 * M_PI / T;
 }
 
 void Planet::move(double dt)
@@ -18,6 +19,7 @@ void Planet::move(double dt)
 	if (!parent)
 		return;
 
+	M += dt * n;
 	double E{ M };
 	while (true)
 	{
@@ -26,8 +28,8 @@ void Planet::move(double dt)
 		if (abs(dE) < 1e-6) break;
 	}
 
-	pos.x = a * (cos(E) - e);
-	pos.y = a * sin(E) * sqrt(1 - pow(e, 2));
+	pos.x = static_cast<float>(a * (cos(E) - e)) + parent->pos.x;
+	pos.y = static_cast<float>(a * sin(E) * sqrt(1 - pow(e, 2))) + parent->pos.y;
 }
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
