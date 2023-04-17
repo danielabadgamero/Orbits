@@ -47,8 +47,6 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Surface* surface, double zoom, SDL
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 
-	// SDL_Log("%d %d", rect.x, rect.y);
-
 	SDL_Texture* texture{ SDL_CreateTextureFromSurface(renderer, surface) };
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 	SDL_DestroyTexture(texture);

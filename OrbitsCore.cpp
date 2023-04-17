@@ -160,7 +160,7 @@ void Orbits::draw()
 	SDL_RenderClear(renderer);
 
 	for (int i{}; i != totalPlanets; i++)
-		if ((focus || i == index("sun") || planets[i]->getParent() == planets[index("sun")] || camera.zoom >= 1e-6) && i == focus)
+		if (focus || i == index("sun") || planets[i]->getParent() == planets[index("sun")] || camera.zoom >= 1e-6)
 			planets[i]->draw(renderer, images[i], camera.zoom, camera.offset);
 
 	SDL_RenderPresent(renderer);
