@@ -7,19 +7,16 @@
 
 static constexpr double G{ 6.6743e-11 };
 
-Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, SDL_Color color)
-	: m{ mass }, color{ color }, r{ radius }, a{ semiMajor }
+Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity, SDL_Color color)
+	: m{ mass }, color{ color }, r{ radius }, a{ semiMajor }, e{ eccentricity }
 {
 	parent = parentPlanet;
-	if (parent)
-		T = sqrt( pow(a, 3) / G * parent->m);
 }
 
 void Planet::move(double dt)
 {
 	if (!parent)
 		return;
-	epoch += dt;
 
 	double E{ M };
 	while (true)
@@ -28,6 +25,9 @@ void Planet::move(double dt)
 		E -= dE;
 		if (abs(dE) < 1e-6) break;
 	}
+
+	pos.x = a * (cos(E) - e);
+	pos.y = a * sin(E) * sqrt(1 - pow(e, 2));
 }
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
