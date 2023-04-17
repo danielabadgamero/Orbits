@@ -19,6 +19,12 @@ namespace Orbits
 		mars,
 		phobos,
 		deimos,
+		jupiter,
+		io,
+		europa,
+		ganeymede,
+		callisto,
+		saturn,
 
 		total_planets
 	};
@@ -33,7 +39,7 @@ namespace Orbits
 	{
 		SDL_FPoint offset{};
 		double zoomSpeed{ 1 };
-		double zoom{ 1e-9 };
+		double zoom{ 1e-10 };
 	} camera{};
 
 	inline SDL_Window* window{};

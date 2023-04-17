@@ -1,5 +1,6 @@
 #include <cmath>
 #include <algorithm>
+#include <vector>
 
 #include <SDL.h>
 
