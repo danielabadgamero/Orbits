@@ -62,8 +62,6 @@ void Orbits::handleEvents()
 			}
 			break;
 		case SDL_MOUSEWHEEL:
-			if (focus)
-				break;
 			SDL_GetMouseState(&x, &y);
 			if (e.wheel.y > 0)
 			{
@@ -83,6 +81,8 @@ void Orbits::handleEvents()
 			}
 			break;
 		case SDL_MOUSEMOTION:
+			if (focus)
+				break;
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
 			{
 				camera.offset.x -= e.motion.xrel;
@@ -98,16 +98,18 @@ void Orbits::draw()
 	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
 	double dt{ currTime - prevTime };
 
-	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xff);
-	SDL_RenderClear(renderer);
-
 	for (int i{}; i != total_planets; i++)
 	{
 		planets[i]->move(dt * timeWarp);
 		if (focus == i && focus)
 			camera.offset = { planets[i]->getPos(camera.zoom).x - monitor.w / 2, planets[i]->getPos(camera.zoom).y - monitor.h / 2 };
-		planets[i]->draw(renderer, planetTexture, camera.zoom, camera.offset);
 	}
+
+	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xff);
+	SDL_RenderClear(renderer);
+
+	for (int i{}; i != total_planets; i++)
+		planets[i]->draw(renderer, planetTexture, camera.zoom, camera.offset);
 
 	SDL_RenderPresent(renderer);
 }
@@ -124,9 +126,9 @@ void Orbits::quit()
 
 int Orbits::load(void*)
 {
-	planets[sun]	= new Planet{ NULL, 1.989e30, 696340000, 0, 0, { 0xfd, 0xb8, 0x13 } };
-	planets[earth]	= new Planet{ planets[sun], 5.9722e24, 6378137, 149.598e9, 365.256 * 86400, { 0x00, 0x00, 0xa5 } };
-	planets[moon]	= new Planet{ planets[earth], 0.07346e24, 1738100, 0.3844e9, 27.3217 * 86400, { 0xb8, 0xae, 0xa3 } };
+	planets[sun]	= new Planet{ NULL, 1.989e30, 696340000, 0, { 0xfd, 0xb8, 0x13 } };
+	planets[earth]	= new Planet{ planets[sun], 5.9722e24, 6378137, 149.598e9, { 0x00, 0x00, 0xa5 } };
+	planets[moon]	= new Planet{ planets[earth], 0.07346e24, 1738100, 0.3844e9, { 0xb8, 0xae, 0xa3 } };
 
 	loadThread.done = true;
 	return 0;

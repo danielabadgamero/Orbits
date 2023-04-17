@@ -17,7 +17,7 @@ private:
 	SDL_Color color{};
 	Planet* parent{};
 public:
-	Planet(Planet*, double, int, double, double, SDL_Color);
+	Planet(Planet*, double, int, double, SDL_Color);
 	void move(double);
 	SDL_Point getPos(double);
 	void draw(SDL_Renderer*, SDL_Texture*, double, SDL_Point);

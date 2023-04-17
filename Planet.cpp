@@ -5,11 +5,14 @@
 
 #include "Planet.h"
 
-Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double period, SDL_Color color)
+static constexpr double G{ 6.6743e-11 };
+
+Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, SDL_Color color)
 	: m{ mass }, color{ color }, r{ radius }, a{ semiMajor }
 {
-	T = period * 27.3217;
 	parent = parentPlanet;
+	if (parent)
+		T = sqrt( pow(a, 3) / G * parent->m);
 }
 
 void Planet::move(double dt)
@@ -19,25 +22,23 @@ void Planet::move(double dt)
 	epoch += dt;
 	while (epoch > T)
 		epoch -= T;
-	double angle{ 2 * M_PI * epoch / T };
-	pos.x = static_cast<float>(a * cos(angle));
-	pos.y = static_cast<float>(a * sin(angle));
+	double angle{ epoch / T };
+	pos.x = static_cast<float>(a * cos(angle)) + parent->pos.x;
+	pos.y = static_cast<float>(a * sin(angle)) + parent->pos.y;
 }
 
 void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double zoom, SDL_Point offset)
 {
-	SDL_Rect rect{ -offset.x, -offset.y, 
-		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX),
-		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX) };
-
-	if (parent)
+	SDL_Rect rect
 	{
-		rect.x = static_cast<int>(zoom * pos.x + zoom * parent->pos.x) - offset.x;
-		rect.y = static_cast<int>(zoom * pos.y + zoom * parent->pos.y) - offset.y;
-	}
-
+		rect.x = static_cast<int>(zoom * pos.x) - offset.x,
+		rect.y = static_cast<int>(zoom * pos.y) - offset.y,
+		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX),
+		std::clamp(static_cast<int>(zoom * r * 2), 10, INT_MAX)
+	};
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
+
 	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
