@@ -20,8 +20,8 @@ private:
 public:
 	Planet(Planet*, double, int, double, double, SDL_Color);
 	void move(double);
-	void draw(SDL_Renderer*, SDL_Texture*, double, double, double, double, SDL_DisplayMode*);
-	Planet* getParent();
+	void draw(SDL_Renderer*, SDL_Texture*, double, double, double, double, SDL_DisplayMode*, const Planet* const) const;
+	Planet* getParent() const;
 };
 
 #endif

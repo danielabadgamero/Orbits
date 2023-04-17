@@ -6,6 +6,11 @@
 
 #include "Planet.h"
 
+static double distance(double x1, double y1, double x2, double y2)
+{
+	return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+}
+
 Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity, SDL_Color color)
 	: m{ mass }, color{ color }, r{ radius }, a{ semiMajor }, e{ eccentricity }
 {
@@ -33,14 +38,17 @@ void Planet::move(double dt)
 	pos.y = static_cast<float>(a * sin(E) * sqrt(1 - pow(e, 2))) + parent->pos.y;
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double fov, double dist, double pitch, double yaw, SDL_DisplayMode* monitor)
+void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double fov, double dist, double pitch, double yaw, SDL_DisplayMode* monitor, const Planet* const focus) const
 {
-	double x{ pos.x - dist * sin(yaw) * cos(pitch) };
-	double y{ pos.y - dist * cos(yaw) * cos(pitch) };
-	double z{ -dist * sin(pitch) }; z;
+	double x{ dist * sin(yaw * M_PI / 180) - focus->pos.x };
+	double y{ dist * cos(yaw * M_PI / 180) - focus->pos.y };
+	double z{ -dist * sin(pitch * M_PI / 180) }; z;
 
-	double beta{ atan((pos.y - y) / (pos.x - x)) };
-	double alpha{ yaw - beta - fov / 2 };
+	double sideA{ distance(x, y, focus->pos.x, focus->pos.y) };
+	double b{ distance(x, y, pos.x, pos.y) };
+	double c{ distance(focus->pos.x, focus->pos.y, pos.x, pos.y) };
+	double gamma{ acos((pow(sideA, 2) + pow(b, 2) - pow(c, 2)) / (2 * sideA * b)) * 180 / M_PI };
+	double alpha{ fov / 2 - gamma };
 
 	SDL_Rect rect
 	{
@@ -56,7 +64,7 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Texture* texture, double fov, doub
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 
-Planet* Planet::getParent()
+Planet* Planet::getParent() const
 {
 	return parent;
 }

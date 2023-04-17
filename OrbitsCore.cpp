@@ -45,7 +45,7 @@ void Orbits::handleEvents()
 				running = false;
 				break;
 			case SDL_SCANCODE_UP:
-				if (focus + 1 == total_planets)
+				if (planets, focus == total_planets)
 					focus = 0;
 				else
 					focus++;
@@ -80,8 +80,8 @@ void Orbits::handleEvents()
 			SDL_GetMouseState(&mouse.x, &mouse.y);
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
 			{
-				camera.yaw += static_cast<float>(e.motion.xrel);
-				camera.pitch += static_cast<float>(e.motion.yrel);
+				camera.yaw -= static_cast<float>(e.motion.xrel) * 0.1f;
+				camera.pitch -= static_cast<float>(e.motion.yrel) * 0.1f;
 			}
 			break;
 		}
@@ -105,7 +105,7 @@ void Orbits::draw()
 	SDL_RenderClear(renderer);
 
 	for (int i{}; i != total_planets; i++)
-		planets[i]->draw(renderer, planetTexture, camera.fov, camera.dist, camera.pitch, camera.yaw, &monitor);
+		planets[i]->draw(renderer, planetTexture, camera.fov, camera.dist, camera.pitch, camera.yaw, &monitor, planets[camera.focus]);
 
 	SDL_RenderPresent(renderer);
 }
