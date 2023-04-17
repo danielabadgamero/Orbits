@@ -12,8 +12,13 @@ namespace Orbits
 	enum Planets
 	{
 		sun,
+		mercury,
+		venus,
 		earth,
 		moon,
+		mars,
+		phobos,
+		deimos,
 
 		total_planets
 	};
@@ -27,8 +32,8 @@ namespace Orbits
 	inline struct
 	{
 		SDL_FPoint offset{};
-		double zoom{ 1 };
 		double zoomSpeed{ 1 };
+		double zoom{ 1e-9 };
 	} camera{};
 
 	inline SDL_Window* window{};
@@ -36,6 +41,7 @@ namespace Orbits
 	inline SDL_DisplayMode monitor{};
 	inline SDL_Texture* planetTexture{};
 	inline SDL_Point mouse{};
+	inline SDL_Point savedPos{};
 	inline Thread loadThread{};
 
 	inline double prevTime{};
