@@ -1,8 +1,6 @@
 #ifndef PLANET_H
 #define PLANET_H
 
-#include <vector>
-
 #include <SDL.h>
 
 constexpr double G{ 6.67428e-11 };

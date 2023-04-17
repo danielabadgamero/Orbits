@@ -9,6 +9,15 @@
 
 namespace Orbits
 {
+	enum Planets
+	{
+		sun,
+		earth,
+		moon,
+
+		total_planets
+	};
+
 	struct Thread
 	{
 		bool done{};
@@ -18,7 +27,7 @@ namespace Orbits
 	inline struct
 	{
 		SDL_Point offset{};
-		double zoom{};
+		double zoom{ 1 };
 	} camera{};
 
 	inline SDL_Window* window{};
@@ -32,7 +41,7 @@ namespace Orbits
 	inline bool running{};
 	inline int focus{};
 	inline int timeWarp{ 1 };
-	inline std::vector<Planet> planets{};
+	inline Planet* planets[total_planets]{};
 
 	void init(const char*);
 	int load(void*);
