@@ -34,7 +34,8 @@ void Orbits::init(const char* title)
 		SDL_Event e;
 		while (SDL_PollEvent(&e));
 		if (images[progress])
-			progress++;
+			if (progress < total_planets - 1)
+				progress++;
 		std::string msg{ "Loading " + planetNames[progress] };
 		SDL_Surface* textSurface{ TTF_RenderText_Blended(font, msg.c_str(), { 0xff, 0x30, 0x30, 0xff }) };
 		SDL_Texture* renderTexture{ SDL_CreateTextureFromSurface(renderer, textSurface) };
