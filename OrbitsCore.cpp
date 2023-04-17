@@ -1,6 +1,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <fstream>
+#include <filesystem>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -219,10 +221,17 @@ static std::vector<char> getImage(std::string planet)
 
 static void loadImage(Orbits::Planets name)
 {
-	std::vector<char> img{ getImage(Orbits::planetNames[name])};
-	SDL_RWops* data{ SDL_RWFromMem(img.data(), static_cast<int>(img.size())) };
-	Orbits::images[name] = IMG_LoadPNG_RW(data);
-	SDL_RWclose(data);
+	std::string path{ "images/" + Orbits::planetNames[name] + ".png" };
+	if (std::filesystem::exists(path))
+		Orbits::images[name] = IMG_Load(path.c_str());
+	else
+	{
+		std::vector<char> img{ getImage(Orbits::planetNames[name]) };
+		SDL_RWops* data{ SDL_RWFromMem(img.data(), static_cast<int>(img.size())) };
+		Orbits::images[name] = IMG_LoadPNG_RW(data);
+		IMG_SavePNG(Orbits::images[name], (Orbits::planetNames[name] + ".png").c_str());
+		SDL_RWclose(data);
+	}
 }
 
 int Orbits::loadImages(void*)
