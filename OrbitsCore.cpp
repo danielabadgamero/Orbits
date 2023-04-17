@@ -229,7 +229,7 @@ static void loadImage(Orbits::Planets name)
 		std::vector<char> img{ getImage(Orbits::planetNames[name]) };
 		SDL_RWops* data{ SDL_RWFromMem(img.data(), static_cast<int>(img.size())) };
 		Orbits::images[name] = IMG_LoadPNG_RW(data);
-		IMG_SavePNG(Orbits::images[name], (Orbits::planetNames[name] + ".png").c_str());
+		IMG_SavePNG(Orbits::images[name], path.c_str());
 		SDL_RWclose(data);
 	}
 }
