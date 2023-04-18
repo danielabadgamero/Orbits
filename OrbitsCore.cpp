@@ -193,6 +193,8 @@ int Orbits::loadPlanets(void*)
 	planets[index("ganymede")] = new Planet{ planets[index("jupiter")], 1481.9e20, 2631200, 1070.4e6, 0.001 };
 	planets[index("callisto")] = new Planet{ planets[index("jupiter")], 1075.9e20, 2410300, 1882.7e6, 0.007 };
 	planets[index("saturn")] = new Planet{ planets[index("sun")], 568.32e24, 60268000, 1432.041e9, 0.0520 };
+	planets[index("dione")] = new Planet{ planets[index("saturn")], 11e20, 561000, 377.40e6, 0.0022 };
+	planets[index("enceladus")] = new Planet{ planets[index("saturn")], 1.08e20, 561000, 238.02e6, 0.0022 };
 	planets[index("uranus")] = new Planet{ planets[index("sun")], 86.811e24, 25559000, 2867.043e9, 0.0469 };
 	planets[index("neptune")] = new Planet{ planets[index("sun")], 102.409e24, 24764000, 4514.953e9, 0.0097 };
 	planets[index("ceres")] = new Planet{ planets[index("sun")], 939300e15, 961000, 4.14087e11, 0.0758 };
