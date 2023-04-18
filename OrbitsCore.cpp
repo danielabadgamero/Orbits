@@ -67,6 +67,8 @@ void Orbits::init(const char* title)
 		static_cast<float>(initWidth / monitor.w * monitor.h)
 	}};
 
+	timeWarp = 1;
+
 	running = true;
 }
 
@@ -117,7 +119,7 @@ void Orbits::handleEvents()
 			if (camera.getFocus() == NULL)
 				break;
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
-				camera.move(e.motion.xrel, e.motion.yrel);
+				camera.move(e.motion.xrel, e.motion.yrel, &monitor);
 			break;
 		}
 }
@@ -132,13 +134,13 @@ void Orbits::draw()
 		planets[i]->move(dt * timeWarp);
 
 	if (camera.getFocus())
-
+		camera.focus();
 
 	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xff);
 	SDL_RenderClear(renderer);
 
 	for (int i{}; i != totalPlanets; i++)
-		planets[i]->draw(renderer, images[i], camera);
+		planets[i]->draw(renderer, images[i], camera.getViewport());
 
 	SDL_RenderPresent(renderer);
 }

@@ -49,7 +49,6 @@ namespace Orbits
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
 	inline SDL_Point mouse{};
-	inline SDL_Point savedPos{};
 	inline Thread planetLoadThread{};
 	inline IPaddress ip{};
 	inline TCPsocket socket{};
@@ -61,7 +60,7 @@ namespace Orbits
 	inline double prevTime{};
 	inline double currTime{};
 	inline bool running{};
-	inline int timeWarp{ 1 };
+	inline int timeWarp{};
 
 	void init(const char*);
 	int loadPlanets(void*);

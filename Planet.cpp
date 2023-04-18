@@ -36,7 +36,7 @@ void Planet::move(double dt)
 	pos.y = static_cast<float>(a * sin(E) * sqrt(1 - pow(e, 2))) + parent->pos.y;
 }
 
-void Planet::draw(SDL_Renderer* renderer, SDL_Surface* surface, Camera viewport)
+void Planet::draw(SDL_Renderer* renderer, SDL_Surface* surface, SDL_FRect viewport)
 {
 	SDL_Rect rect
 	{
