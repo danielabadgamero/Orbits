@@ -20,15 +20,24 @@ void Camera::move(int x, int y)
 
 void Camera::focus()
 {
-	viewport.x = focusedPlanet->getPos().x;
-	viewport.y = focusedPlanet->getPos().y;
+	viewport.x = Orbits::planets[focusedPlanet]->getPos().x;
+	viewport.y = Orbits::planets[focusedPlanet]->getPos().y;
 	viewport.x -= viewport.w / 2;
 	viewport.y -= viewport.h / 2;
 }
 
 void Camera::zoom(double wheel)
 {
-	wheel;
+	if (wheel > 0)
+	{
+		viewport.w *= 0.8f;
+		viewport.h *= 0.8f;
+	}
+	else
+	{
+		viewport.w /= 0.8f;
+		viewport.h /= 0.8f;
+	}
 }
 
 SDL_FRect Camera::getViewport()
@@ -36,7 +45,7 @@ SDL_FRect Camera::getViewport()
 	return viewport;
 }
 
-Planet*& Camera::getFocus()
+int& Camera::getFocus()
 {
 	return focusedPlanet;
 }

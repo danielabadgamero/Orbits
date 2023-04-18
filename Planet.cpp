@@ -42,8 +42,8 @@ void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 	{
 		static_cast<int>((pos.x - viewport.x) / viewport.w * Orbits::monitor.w),
 		static_cast<int>((pos.y - viewport.y) / viewport.h * Orbits::monitor.h),
-		std::clamp(static_cast<int>(r / viewport.w) * Orbits::monitor.w, 10, INT_MAX),
-		std::clamp(static_cast<int>(r / viewport.h) * Orbits::monitor.h, 10, INT_MAX),
+		std::clamp(static_cast<int>(r / viewport.w * Orbits::monitor.w), 10, INT_MAX),
+		std::clamp(static_cast<int>(r / viewport.h * Orbits::monitor.h), 10, INT_MAX),
 	};
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;

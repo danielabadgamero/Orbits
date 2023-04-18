@@ -9,12 +9,12 @@ class Camera
 {
 private:
 	SDL_FRect viewport{};
-	Planet* focusedPlanet{};
+	int focusedPlanet{};
 public:
 	void move(int, int);
 	void focus();
 	void zoom(double);
-	Planet*& getFocus();
+	int& getFocus();
 	SDL_FRect getViewport();
 	Camera(SDL_FPoint = {});
 };

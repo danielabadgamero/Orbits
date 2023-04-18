@@ -88,19 +88,19 @@ void Orbits::handleEvents()
 				running = false;
 				break;
 			case SDL_SCANCODE_UP:
-				if (camera.getFocus() == planets[totalPlanets - 1] || camera.getFocus() == NULL)
-					camera.getFocus() = planets[0];
+				if (camera.getFocus() == totalPlanets - 1)
+					camera.getFocus() = 0;
 				else
 					camera.getFocus()++;
 				break;
 			case SDL_SCANCODE_DOWN:
-				if (camera.getFocus() == NULL)
-					camera.getFocus() = planets[totalPlanets - 1];
+				if (camera.getFocus() == 0)
+					camera.getFocus() = totalPlanets - 1;
 				else
 					camera.getFocus()--;
 				break;
 			case SDL_SCANCODE_SPACE:
-				camera.getFocus() = NULL;
+				camera.getFocus() = 0;
 				break;
 			case SDL_SCANCODE_PERIOD:
 				if (timeWarp < 1000000000)
@@ -114,9 +114,10 @@ void Orbits::handleEvents()
 			break;
 		case SDL_MOUSEWHEEL:
 			camera.zoom(static_cast<double>(e.wheel.preciseY));
+			break;
 		case SDL_MOUSEMOTION:
 			SDL_GetMouseState(&mouse.x, &mouse.y);
-			if (camera.getFocus() != NULL)
+			if (camera.getFocus() != 0)
 				break;
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LEFT)
 				camera.move(e.motion.xrel, e.motion.yrel);
