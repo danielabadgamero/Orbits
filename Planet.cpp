@@ -52,11 +52,6 @@ void Planet::draw(SDL_Renderer* renderer, SDL_Surface* surface, double zoom, SDL
 	SDL_DestroyTexture(texture);
 }
 
-SDL_FPoint Planet::getPos(double zoom)
-{
-	return { static_cast<float>(zoom * pos.x), static_cast<float>(zoom * pos.y) };
-}
-
 Planet* Planet::getParent()
 {
 	return parent;

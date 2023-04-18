@@ -8,6 +8,7 @@
 #include <SDL_net.h>
 
 #include "Planet.h"
+#include "Camera.h"
 
 constexpr int totalPlanets{ 21 };
 
@@ -44,13 +45,6 @@ namespace Orbits
 		SDL_Thread* thread{};
 	};
 
-	inline struct
-	{
-		SDL_FPoint offset{};
-		double zoomSpeed{ 1 };
-		double zoom{ 1e-9 };
-	} camera{};
-
 	inline SDL_Window* window{};
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
@@ -65,7 +59,6 @@ namespace Orbits
 	inline double prevTime{};
 	inline double currTime{};
 	inline bool running{};
-	inline int focus{};
 	inline int timeWarp{ 1 };
 	inline Planet* planets[totalPlanets]{};
 
