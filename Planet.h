@@ -19,7 +19,8 @@ private:
 public:
 	Planet(Planet*, double, int, double, double);
 	void move(double);
-	void draw(SDL_Renderer*, SDL_Surface*, SDL_FRect);
+	void draw(SDL_Surface*, SDL_FRect);
+	SDL_FPoint getPos();
 	Planet* getParent();
 };
 

@@ -11,7 +11,7 @@ private:
 	SDL_FRect viewport{};
 	Planet* focusedPlanet{};
 public:
-	void move(int, int, SDL_DisplayMode*);
+	void move(int, int);
 	void focus();
 	void zoom(double);
 	Planet*& getFocus();
