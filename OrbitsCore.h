@@ -55,12 +55,13 @@ namespace Orbits
 	inline TCPsocket socket{};
 	inline Thread imageLoadThread{};
 	inline SDL_Surface* images[totalPlanets]{};
+	inline Planet* planets[totalPlanets]{};
+	inline Camera camera{};
 
 	inline double prevTime{};
 	inline double currTime{};
 	inline bool running{};
 	inline int timeWarp{ 1 };
-	inline Planet* planets[totalPlanets]{};
 
 	void init(const char*);
 	int loadPlanets(void*);
