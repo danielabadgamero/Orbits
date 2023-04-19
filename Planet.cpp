@@ -55,6 +55,17 @@ void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 	SDL_DestroyTexture(texture);
 }
 
+void Planet::drawSurface(SDL_FRect viewport)
+{
+	SDL_FRect rect
+	{
+		(pos.x - viewport.x + viewport.w / 2.0f) / viewport.w * Orbits::monitor.h,
+		(pos.y - viewport.y + viewport.h / 2.0f) / viewport.h * Orbits::monitor.h,
+		std::clamp(r / viewport.w * Orbits::monitor.w, 10.0f, FLT_MAX),
+		std::clamp(r / viewport.h * Orbits::monitor.h, 10.0f, FLT_MAX),
+	};
+}
+
 Planet* Planet::getParent()
 {
 	return parent;

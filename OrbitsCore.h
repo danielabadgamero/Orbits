@@ -9,6 +9,7 @@
 
 #include "Planet.h"
 #include "Camera.h"
+#include "Vessel.h"
 
 constexpr int totalPlanets{ 27 };
 
@@ -51,6 +52,14 @@ namespace Orbits
 		SDL_Thread* thread{};
 	};
 
+	enum ViewMode
+	{
+		map,
+		vessel,
+
+		total_view_modes
+	};
+
 	inline SDL_Window* window{};
 	inline SDL_Renderer* renderer{};
 	inline SDL_DisplayMode monitor{};
@@ -62,6 +71,7 @@ namespace Orbits
 	inline SDL_Surface* images[totalPlanets]{};
 	inline Planet* planets[totalPlanets]{};
 	inline Camera camera{};
+	inline ViewMode viewMode{ map };
 
 	inline double prevTime{};
 	inline double currTime{};

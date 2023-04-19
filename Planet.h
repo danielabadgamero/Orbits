@@ -23,6 +23,7 @@ public:
 	Planet(Planet*, double, int, double, double, std::string);
 	void move(double);
 	void draw(SDL_Surface*, SDL_FRect);
+	void drawSurface(SDL_FRect);
 	SDL_FPoint getPos();
 	Planet* getParent();
 };
