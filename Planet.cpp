@@ -9,8 +9,8 @@
 #include "OrbitsCore.h"
 #include "Planet.h"
 
-Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity)
-	: m{ mass }, r{ radius }, a{ semiMajor }, e{ eccentricity }
+Planet::Planet(Planet* parentPlanet, double mass, int radius, double semiMajor, double eccentricity, std::string name)
+	: m{ mass }, r{ radius }, a{ semiMajor }, e{ eccentricity }, name{ name }
 {
 	parent = parentPlanet;
 	if (!parent) return;
@@ -45,6 +45,8 @@ void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 		std::clamp(r / viewport.w * Orbits::monitor.w, 10.0f, FLT_MAX),
 		std::clamp(r / viewport.h * Orbits::monitor.h, 10.0f, FLT_MAX),
 	};
+	if (name == "saturn")
+		rect.w *= 2.2f, rect.h *= 2.2f;
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 

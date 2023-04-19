@@ -1,6 +1,8 @@
 #ifndef PLANET_H
 #define PLANET_H
 
+#include <string>
+
 #include <SDL.h>
 
 constexpr double G{ 6.67428e-11 };
@@ -16,8 +18,9 @@ private:
 	double n{};
 	SDL_FPoint pos{};
 	Planet* parent{};
+	std::string name{};
 public:
-	Planet(Planet*, double, int, double, double);
+	Planet(Planet*, double, int, double, double, std::string);
 	void move(double);
 	void draw(SDL_Surface*, SDL_FRect);
 	SDL_FPoint getPos();

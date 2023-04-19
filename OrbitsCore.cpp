@@ -166,29 +166,29 @@ void Orbits::quit()
 
 int Orbits::loadPlanets(void*)
 {
-	planets[index("sun")] = new Planet{ NULL, 1.989e30, 696340000, 0, 0 };
-	planets[index("mercury")] = new Planet{ planets[index("sun")], 0.33010e24, 2440500, 57.909e9, 0.2056 };
-	planets[index("venus")] = new Planet{ planets[index("sun")], 4.8673e24, 6051800, 108.210e9, 0.0068 };
-	planets[index("earth")] = new Planet{ planets[index("sun")], 5.9722e24, 6378137, 149.598e9, 0.0167 };
-	planets[index("moon")] = new Planet{ planets[index("earth")], 0.07346e24, 1738100, 0.3844e9, 0.0549 };
-	planets[index("mars")] = new Planet{ planets[index("sun")], 0.64169e24, 3396200, 227.956e9, 0.0935 };
-	planets[index("phobos")] = new Planet{ planets[index("mars")], 10.6e15, 13000, 9378e3, 0.0151 };
-	planets[index("deimos")] = new Planet{ planets[index("mars")], 2.4e15, 7800, 23459e3, 0.0005 };
-	planets[index("jupiter")] = new Planet{ planets[index("sun")], 1898.13e24, 71492000, 778.479e9, 0.0487 };
-	planets[index("io")] = new Planet{ planets[index("jupiter")], 893.2e20, 1821500, 421.8e6, 0.004 };
-	planets[index("europa")] = new Planet{ planets[index("jupiter")], 480e20, 1560800, 671.1e6, 0.009 };
-	planets[index("ganymede")] = new Planet{ planets[index("jupiter")], 1481.9e20, 2631200, 1070.4e6, 0.001 };
-	planets[index("callisto")] = new Planet{ planets[index("jupiter")], 1075.9e20, 2410300, 1882.7e6, 0.007 };
-	planets[index("saturn")] = new Planet{ planets[index("sun")], 568.32e24, 60268000, 1432.041e9, 0.0520 };
-	planets[index("dione")] = new Planet{ planets[index("saturn")], 11e20, 561000, 377.40e6, 0.0022 };
-	planets[index("enceladus")] = new Planet{ planets[index("saturn")], 1.08e20, 561000, 238.02e6, 0.0022 };
-	planets[index("uranus")] = new Planet{ planets[index("sun")], 86.811e24, 25559000, 2867.043e9, 0.0469 };
-	planets[index("neptune")] = new Planet{ planets[index("sun")], 102.409e24, 24764000, 4514.953e9, 0.0097 };
-	planets[index("ceres")] = new Planet{ planets[index("sun")], 939300e15, 961000, 4.14087e11, 0.0758 };
-	planets[index("eris")] = new Planet{ planets[index("sun")], 1.6466e22, 1163000, 1.015231e13, 0.43607 };
-	planets[index("haumea")] = new Planet{ planets[index("sun")], 4.006e22, 780000, 6.450062e12, 0.19642 };
-	planets[index("makemake")] = new Planet{ planets[index("sun")], 3.1e21, 715000, 6.79623e12, 0.16126 };
-	planets[index("pluto")] = new Planet{ planets[index("sun")], 0.01303e24, 1188000, 5869.656e9, 0.2444 };
+	planets[index("sun")] = new Planet{ NULL, 1.989e30, 696340000, 0, 0, "sun" };
+	planets[index("mercury")] = new Planet{ planets[index("sun")], 0.33010e24, 2440500, 57.909e9, 0.2056, "mercury" };
+	planets[index("venus")] = new Planet{ planets[index("sun")], 4.8673e24, 6051800, 108.210e9, 0.0068, "venus" };
+	planets[index("earth")] = new Planet{ planets[index("sun")], 5.9722e24, 6378137, 149.598e9, 0.0167, "earth" };
+	planets[index("moon")] = new Planet{ planets[index("earth")], 0.07346e24, 1738100, 0.3844e9, 0.0549, "moon" };
+	planets[index("mars")] = new Planet{ planets[index("sun")], 0.64169e24, 3396200, 227.956e9, 0.0935, "mars" };
+	planets[index("phobos")] = new Planet{ planets[index("mars")], 10.6e15, 13000, 9378e3, 0.0151, "phobos" };
+	planets[index("deimos")] = new Planet{ planets[index("mars")], 2.4e15, 7800, 23459e3, 0.0005, "deimos" };
+	planets[index("jupiter")] = new Planet{ planets[index("sun")], 1898.13e24, 71492000, 778.479e9, 0.0487, "jupiter" };
+	planets[index("io")] = new Planet{ planets[index("jupiter")], 893.2e20, 1821500, 421.8e6, 0.004, "io" };
+	planets[index("europa")] = new Planet{ planets[index("jupiter")], 480e20, 1560800, 671.1e6, 0.009, "europa" };
+	planets[index("ganymede")] = new Planet{ planets[index("jupiter")], 1481.9e20, 2631200, 1070.4e6, 0.001, "ganymede" };
+	planets[index("callisto")] = new Planet{ planets[index("jupiter")], 1075.9e20, 2410300, 1882.7e6, 0.007, "callisto" };
+	planets[index("saturn")] = new Planet{ planets[index("sun")], 568.32e24, 60268000, 1432.041e9, 0.0520, "saturn" };
+	planets[index("dione")] = new Planet{ planets[index("saturn")], 11e20, 561000, 377.40e6, 0.0022, "dione" };
+	planets[index("enceladus")] = new Planet{ planets[index("saturn")], 1.08e20, 561000, 238.02e6, 0.0022, "enceladus" };
+	planets[index("uranus")] = new Planet{ planets[index("sun")], 86.811e24, 25559000, 2867.043e9, 0.0469, "uranus" };
+	planets[index("neptune")] = new Planet{ planets[index("sun")], 102.409e24, 24764000, 4514.953e9, 0.0097, "neptune" };
+	planets[index("ceres")] = new Planet{ planets[index("sun")], 939300e15, 961000, 4.14087e11, 0.0758, "ceres" };
+	planets[index("eris")] = new Planet{ planets[index("sun")], 1.6466e22, 1163000, 1.015231e13, 0.43607, "eris" };
+	planets[index("haumea")] = new Planet{ planets[index("sun")], 4.006e22, 780000, 6.450062e12, 0.19642, "haumea" };
+	planets[index("makemake")] = new Planet{ planets[index("sun")], 3.1e21, 715000, 6.79623e12, 0.16126, "makemake" };
+	planets[index("pluto")] = new Planet{ planets[index("sun")], 0.01303e24, 1188000, 5869.656e9, 0.2444, "pluto" };
 
 	planetLoadThread.done = true;
 	return 0;
