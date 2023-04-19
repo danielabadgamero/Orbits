@@ -38,18 +38,18 @@ void Planet::move(double dt)
 
 void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 {
-	SDL_Rect rect
+	SDL_FRect rect
 	{
-		static_cast<int>((pos.x - viewport.x) / viewport.w * Orbits::monitor.w),
-		static_cast<int>((pos.y - viewport.y) / viewport.h * Orbits::monitor.h),
-		std::clamp(static_cast<int>(r / viewport.w * Orbits::monitor.w), 10, INT_MAX),
-		std::clamp(static_cast<int>(r / viewport.h * Orbits::monitor.h), 10, INT_MAX),
+		(pos.x - viewport.x + viewport.w / 2.0f) / viewport.w * Orbits::monitor.w,
+		(pos.y - viewport.y + viewport.h / 2.0f) / viewport.h * Orbits::monitor.h,
+		std::clamp(r / viewport.w * Orbits::monitor.w, 10.0f, FLT_MAX),
+		std::clamp(r / viewport.h * Orbits::monitor.h, 10.0f, FLT_MAX),
 	};
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 
 	SDL_Texture* texture{ SDL_CreateTextureFromSurface(Orbits::renderer, surface) };
-	SDL_RenderCopy(Orbits::renderer, texture, NULL, &rect);
+	SDL_RenderCopyF(Orbits::renderer, texture, NULL, &rect);
 	SDL_DestroyTexture(texture);
 }
 

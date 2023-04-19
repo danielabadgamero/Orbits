@@ -113,7 +113,11 @@ void Orbits::handleEvents()
 			}
 			break;
 		case SDL_MOUSEWHEEL:
-			camera.zoom(static_cast<double>(e.wheel.preciseY));
+			camera.savePos(mouse);
+			if (e.wheel.y > 0)
+				camera.getZoomFactor() /= 1.1;
+			else
+				camera.getZoomFactor() *= 1.1;
 			break;
 		case SDL_MOUSEMOTION:
 			SDL_GetMouseState(&mouse.x, &mouse.y);
@@ -130,6 +134,9 @@ void Orbits::draw()
 	prevTime = currTime;
 	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
 	double dt{ currTime - prevTime };
+
+	if (camera.getZoomFactor() != 1)
+		camera.zoom();
 
 	for (int i{}; i != totalPlanets; i++)
 		planets[i]->move(dt * timeWarp);
