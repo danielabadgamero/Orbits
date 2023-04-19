@@ -11,7 +11,7 @@
 #include "Camera.h"
 #include "Vessel.h"
 
-constexpr int totalPlanets{ 27 };
+constexpr int totalPlanets{ 37 };
 
 namespace Orbits
 {
@@ -37,8 +37,18 @@ namespace Orbits
 		"iapetus",
 		"mimas",
 		"rhea",
+		"tethys",
+		"titan",
 		"uranus",
+		"ariel",
+		"miranda",
+		"oberon",
+		"puck",
+		"titania",
+		"umbriel",
 		"neptune",
+		"proteus",
+		"triton",
 		"ceres",
 		"eris",
 		"haumea",
