@@ -144,7 +144,7 @@ void Orbits::draw()
 	if (camera.getFocus())
 		camera.focus();
 
-	SDL_SetRenderDrawColor(renderer, 0x10, 0x10, 0x10, 0xff);
+	SDL_SetRenderDrawColor(renderer, 0x08, 0x08, 0x08, 0xff);
 	SDL_RenderClear(renderer);
 
 	for (int i{}; i != totalPlanets; i++)
@@ -182,6 +182,10 @@ int Orbits::loadPlanets(void*)
 	planets[index("saturn")] = new Planet{ planets[index("sun")], 568.32e24, 60268000, 1432.041e9, 0.0520, "saturn" };
 	planets[index("dione")] = new Planet{ planets[index("saturn")], 11e20, 561000, 377.40e6, 0.0022, "dione" };
 	planets[index("enceladus")] = new Planet{ planets[index("saturn")], 1.08e20, 561000, 238.02e6, 0.0022, "enceladus" };
+	planets[index("hyperion")] = new Planet{ planets[index("saturn")], 5.5510e18, 135000, 1481009e3, 0.1230061, "hyperion" };
+	planets[index("iapetus")] = new Planet{ planets[index("saturn")], 1.8056591e21, 734400, 3560820e3, 0.0276812, "iapetus" };
+	planets[index("mimas")] = new Planet{ planets[index("saturn")], 3.75094e19, 198200, 185539e3, 0.0196, "mimas" };
+	planets[index("rhea")] = new Planet{ planets[index("saturn")], 2.3064854e21, 763500, 527108e3, 0.0012583, "rhea" };
 	planets[index("uranus")] = new Planet{ planets[index("sun")], 86.811e24, 25559000, 2867.043e9, 0.0469, "uranus" };
 	planets[index("neptune")] = new Planet{ planets[index("sun")], 102.409e24, 24764000, 4514.953e9, 0.0097, "neptune" };
 	planets[index("ceres")] = new Planet{ planets[index("sun")], 939300e15, 961000, 4.14087e11, 0.0758, "ceres" };

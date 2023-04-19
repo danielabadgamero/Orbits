@@ -10,7 +10,7 @@
 #include "Planet.h"
 #include "Camera.h"
 
-constexpr int totalPlanets{ 21 };
+constexpr int totalPlanets{ 27 };
 
 namespace Orbits
 {
@@ -30,6 +30,12 @@ namespace Orbits
 		"ganymede",
 		"callisto",
 		"saturn",
+		"dione",
+		"enceladus",
+		"hyperion",
+		"iapetus",
+		"mimas",
+		"rhea",
 		"uranus",
 		"neptune",
 		"ceres",
