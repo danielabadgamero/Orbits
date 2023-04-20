@@ -79,6 +79,7 @@ namespace Orbits
 	inline int timeWarp{};
 
 	void init(const char*);
+	int index(std::string name);
 	int loadPlanets(void*);
 	int loadImages(void*);
 	void handleEvents();

@@ -13,9 +13,9 @@
 #include "Planet.h"
 #include "Camera.h"
 
-static int index(std::string name)
+int Orbits::index(std::string name)
 {
-	return static_cast<int>(std::distance(Orbits::planetNames.begin(), std::find(Orbits::planetNames.begin(), Orbits::planetNames.end(), name)));
+	return static_cast<int>(std::distance(planetNames.begin(), std::find(planetNames.begin(), planetNames.end(), name)));
 }
 
 void Orbits::init(const char* title)
@@ -235,13 +235,13 @@ static void loadImage(std::string name)
 {
 	std::string path{ "images/" + name + ".png" };
 	if (std::filesystem::exists(path))
-		Orbits::images[index(name)] = IMG_Load(path.c_str());
+		Orbits::images[Orbits::index(name)] = IMG_Load(path.c_str());
 	else
 	{
 		std::vector<char> img{ getImage(name) };
 		SDL_RWops* data{ SDL_RWFromMem(img.data(), static_cast<int>(img.size())) };
-		Orbits::images[index(name)] = IMG_LoadPNG_RW(data);
-		IMG_SavePNG(Orbits::images[index(name)], path.c_str());
+		Orbits::images[Orbits::index(name)] = IMG_LoadPNG_RW(data);
+		IMG_SavePNG(Orbits::images[Orbits::index(name)], path.c_str());
 		SDL_RWclose(data);
 	}
 }
