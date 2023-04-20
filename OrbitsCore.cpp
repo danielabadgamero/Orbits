@@ -110,18 +110,6 @@ void Orbits::handleEvents()
 				if (timeWarp > 9)
 					timeWarp /= 10;
 				break;
-			case SDL_SCANCODE_TAB:
-				if (SDL_GetKeyboardState(NULL)[SDLK_LSHIFT])
-					if (viewMode == 0)
-						viewMode = static_cast<ViewMode>(total_view_modes - 1);
-					else
-						viewMode = static_cast<ViewMode>(viewMode - 1);
-				else
-					if (viewMode == total_view_modes - 1)
-						viewMode = static_cast<ViewMode>(0);
-					else
-						viewMode = static_cast<ViewMode>(viewMode + 1);
-				break;
 			}
 			break;
 		case SDL_MOUSEWHEEL:
@@ -147,24 +135,18 @@ void Orbits::draw()
 	currTime = static_cast<double>(SDL_GetTicks64()) / 1000.0;
 	double dt{ currTime - prevTime };
 
+	if (camera.getZoomFactor() != 1)
+		camera.zoom();
+	for (int i{}; i != totalPlanets; i++)
+		planets[i]->move(dt * timeWarp);
+	if (camera.getFocus())
+		camera.focus();
+
 	SDL_SetRenderDrawColor(renderer, 0x08, 0x08, 0x08, 0xff);
 	SDL_RenderClear(renderer);
-
-	switch (viewMode)
-	{
-	case map:
-		if (camera.getZoomFactor() != 1)
-			camera.zoom();
-		for (int i{}; i != totalPlanets; i++)
-			planets[i]->move(dt * timeWarp);
-		if (camera.getFocus())
-			camera.focus();
-		for (int i{}; i != totalPlanets; i++)
-			planets[i]->draw(images[i], camera.getViewport());
-		break;
-	case vessel:
-		break;
-	}
+	
+	for (int i{}; i != totalPlanets; i++)
+		planets[i]->draw(images[i], camera.getViewport());
 
 	SDL_RenderPresent(renderer);
 }
