@@ -18,6 +18,8 @@ private:
 	double n{};
 	SDL_FPoint pos{};
 	Planet* parent{};
+	SDL_Texture* texture{};
+	SDL_Color groundColor{};
 	std::string name{};
 public:
 	Planet(Planet*, double, int, double, double, std::string);

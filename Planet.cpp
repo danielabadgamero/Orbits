@@ -55,6 +55,26 @@ void Planet::move(double dt)
 
 void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 {
+	if (!texture)
+	{
+		texture = SDL_CreateTextureFromSurface(Orbits::renderer, surface);
+		int totalR{};
+		int totalG{};
+		int totalB{};
+		for (int y{}; y != surface->h; y++)
+			for (int x{}; x != surface->w; x++)
+			{
+				double alpha{ static_cast<double>(((int*)surface->pixels)[y * surface->w + x] & surface->format->Amask >> 24) };
+				totalR += static_cast<int>((((int*)surface->pixels)[y * surface->w + x] & surface->format->Rmask) * alpha / 0xff);
+				totalG += static_cast<int>(((((int*)surface->pixels)[y * surface->w + x] & surface->format->Gmask) >> 8) * alpha / 0xff);
+				totalB += static_cast<int>(((((int*)surface->pixels)[y * surface->w + x] & surface->format->Bmask) >> 16) * alpha / 0xff);
+			}
+		totalR /= surface->h * surface->w;
+		totalG /= surface->h * surface->w;
+		totalB /= surface->h * surface->w;
+		groundColor = { static_cast<Uint8>(totalR), static_cast<Uint8>(totalG), static_cast<Uint8>(totalB), 0xff };
+	}
+
 	SDL_FRect rect
 	{
 		(pos.x - viewport.x + viewport.w / 2.0f) / viewport.w * Orbits::monitor.w,
@@ -67,9 +87,7 @@ void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 	rect.x -= rect.w / 2;
 	rect.y -= rect.h / 2;
 
-	SDL_Texture* texture{ SDL_CreateTextureFromSurface(Orbits::renderer, surface) };
 	SDL_RenderCopyF(Orbits::renderer, texture, NULL, &rect);
-	SDL_DestroyTexture(texture);
 
 	if (Orbits::camera.getFocus() == Orbits::index(name))
 	{
@@ -83,17 +101,6 @@ void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 		drawInfo("Semi-major axis: " + std::to_string(a), textRect);
 		drawInfo("Eccentricity: " + std::to_string(e), textRect);
 	}
-}
-
-void Planet::drawSurface(SDL_FRect viewport)
-{
-	SDL_FRect rect
-	{
-		(pos.x - viewport.x + viewport.w / 2.0f) / viewport.w * Orbits::monitor.h,
-		(pos.y - viewport.y + viewport.h / 2.0f) / viewport.h * Orbits::monitor.h,
-		std::clamp(r / viewport.w * Orbits::monitor.w, 10.0f, FLT_MAX),
-		std::clamp(r / viewport.h * Orbits::monitor.h, 10.0f, FLT_MAX),
-	};
 }
 
 Planet* Planet::getParent()
