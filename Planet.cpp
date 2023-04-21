@@ -10,6 +10,11 @@
 #include "Planet.h"
 #include "Camera.h"
 
+static double distance(SDL_FPoint A, SDL_FPoint B)
+{
+	return std::sqrt(std::pow(A.x - B.x, 2) + std::pow(A.y - B.y, 2));
+}
+
 static void drawInfo(std::string info, SDL_Rect& rect)
 {
 	TTF_Font* font{ TTF_OpenFont("C:\\Windows\\Fonts\\AGENCYR.TTF", 32) };
@@ -64,30 +69,42 @@ void Planet::draw(SDL_Surface* surface, SDL_FRect viewport)
 		for (int y{}; y != surface->h; y++)
 			for (int x{}; x != surface->w; x++)
 			{
-				double alpha{ static_cast<double>(((int*)surface->pixels)[y * surface->w + x] & surface->format->Amask >> 24) };
-				totalR += static_cast<int>((((int*)surface->pixels)[y * surface->w + x] & surface->format->Rmask) * alpha / 0xff);
-				totalG += static_cast<int>(((((int*)surface->pixels)[y * surface->w + x] & surface->format->Gmask) >> 8) * alpha / 0xff);
-				totalB += static_cast<int>(((((int*)surface->pixels)[y * surface->w + x] & surface->format->Bmask) >> 16) * alpha / 0xff);
+				totalR += ((int*)surface->pixels)[y * surface->w + x] & surface->format->Rmask;
+				totalG += (((int*)surface->pixels)[y * surface->w + x] & surface->format->Gmask) >> 8;
+				totalB += (((int*)surface->pixels)[y * surface->w + x] & surface->format->Bmask) >> 16;
 			}
 		totalR /= surface->h * surface->w;
 		totalG /= surface->h * surface->w;
 		totalB /= surface->h * surface->w;
 		groundColor = { static_cast<Uint8>(totalR), static_cast<Uint8>(totalG), static_cast<Uint8>(totalB), 0xff };
 	}
-
-	SDL_FRect rect
+	if (viewport.w < 100)
 	{
-		(pos.x - viewport.x + viewport.w / 2.0f) / viewport.w * Orbits::monitor.w,
-		(pos.y - viewport.y + viewport.h / 2.0f) / viewport.h * Orbits::monitor.h,
-		std::clamp(r / viewport.w * Orbits::monitor.w, 10.0f, FLT_MAX),
-		std::clamp(r / viewport.h * Orbits::monitor.h, 10.0f, FLT_MAX),
-	};
-	if (name == "saturn")
-		rect.w *= 2.2f, rect.h *= 2.2f;
-	rect.x -= rect.w / 2;
-	rect.y -= rect.h / 2;
+		SDL_FPoint cameraPos{ viewport.x, viewport.y };
+		double height{ distance(cameraPos, pos) - r };
+		if (height < viewport.h / 2)
+		{
+			SDL_Rect rect{ 0, 0, Orbits::monitor.w, Orbits::monitor.h };
+			SDL_SetRenderDrawColor(Orbits::renderer, groundColor.r, groundColor.g, groundColor.b, 0xff);
+			SDL_RenderFillRect(Orbits::renderer, &rect);
+		}
+	}
+	else
+	{
+		SDL_FRect rect
+		{
+			(pos.x - viewport.x + viewport.w / 2.0f) / viewport.w * Orbits::monitor.w,
+			(pos.y - viewport.y + viewport.h / 2.0f) / viewport.h * Orbits::monitor.h,
+			std::clamp(r / viewport.w * Orbits::monitor.w, 10.0f, FLT_MAX),
+			std::clamp(r / viewport.h * Orbits::monitor.h, 10.0f, FLT_MAX),
+		};
+		if (name == "saturn")
+			rect.w *= 2.2f, rect.h *= 2.2f;
+		rect.x -= rect.w / 2;
+		rect.y -= rect.h / 2;
 
-	SDL_RenderCopyF(Orbits::renderer, texture, NULL, &rect);
+		SDL_RenderCopyF(Orbits::renderer, texture, NULL, &rect);
+	}
 
 	if (Orbits::camera.getFocus() == Orbits::index(name))
 	{

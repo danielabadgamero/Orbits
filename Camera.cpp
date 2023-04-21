@@ -5,6 +5,7 @@
 #include "OrbitsCore.h"
 #include "Planet.h"
 #include "Camera.h"
+#include "Vessel.h"
 
 Camera::Camera(SDL_FPoint bounds)
 {
@@ -20,8 +21,15 @@ void Camera::move(int x, int y)
 
 void Camera::focus()
 {
-	viewport.x = Orbits::planets[focusedPlanet]->getPos().x;
-	viewport.y = Orbits::planets[focusedPlanet]->getPos().y;
+	if (focusedPlanet == totalPlanets)
+	{
+		// focus vessel
+	}
+	else
+	{
+		viewport.x = Orbits::planets[focusedPlanet]->getPos().x;
+		viewport.y = Orbits::planets[focusedPlanet]->getPos().y;
+	}
 }
 
 void Camera::zoom()

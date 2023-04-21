@@ -88,14 +88,14 @@ void Orbits::handleEvents()
 				running = false;
 				break;
 			case SDL_SCANCODE_UP:
-				if (camera.getFocus() == totalPlanets - 1)
+				if (camera.getFocus() == totalPlanets)
 					camera.getFocus() = 0;
 				else
 					camera.getFocus()++;
 				break;
 			case SDL_SCANCODE_DOWN:
 				if (camera.getFocus() == 0)
-					camera.getFocus() = totalPlanets - 1;
+					camera.getFocus() = totalPlanets;
 				else
 					camera.getFocus()--;
 				break;
