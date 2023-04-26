@@ -4,30 +4,13 @@
 #include <vector>
 #include <chrono>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Planet.h"
 
 namespace Orbits
 {
-	enum Planets
-	{
-		sun,
-		mercury,
-		venus,
-		earth,
-		moon,
-		mars,
-		phobos,
-		deimos,
-		jupiter,
-		io,
-		europa,
-		ganeymede,
-		callisto,
-		saturn,
-
-		total_planets
-	};
-
 	inline struct
 	{
 		double dist{ 5e10 };
@@ -38,12 +21,13 @@ namespace Orbits
 		double fov{ 90 };
 	} camera{};
 
+	inline GLFWwindow* window{};
+	inline GLFWvidmode* screen{};
+
 	inline std::chrono::high_resolution_clock::time_point prevTime;
 	inline std::chrono::high_resolution_clock::time_point currTime;
 	inline bool running{};
-	inline int focus{};
-	inline int timeWarp{ 1 };
-	inline Planet* planets[total_planets]{};
+	inline std::vector<Planet*> planets{};
 
 	void init(const char*);
 	void handleEvents();
