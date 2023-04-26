@@ -2,8 +2,7 @@
 #define THUNDER_CORE
 
 #include <vector>
-
-#include <SDL.h>
+#include <chrono>
 
 #include "Planet.h"
 
@@ -29,12 +28,6 @@ namespace Orbits
 		total_planets
 	};
 
-	struct Thread
-	{
-		bool done{};
-		SDL_Thread* thread{};
-	};
-
 	inline struct
 	{
 		double dist{ 5e10 };
@@ -45,23 +38,14 @@ namespace Orbits
 		double fov{ 90 };
 	} camera{};
 
-	inline SDL_Window* window{};
-	inline SDL_Renderer* renderer{};
-	inline SDL_DisplayMode monitor{};
-	inline SDL_Texture* planetTexture{};
-	inline SDL_Point mouse{};
-	inline SDL_Point savedPos{};
-	inline Thread loadThread{};
-
-	inline double prevTime{};
-	inline double currTime{};
+	inline std::chrono::high_resolution_clock::time_point prevTime;
+	inline std::chrono::high_resolution_clock::time_point currTime;
 	inline bool running{};
 	inline int focus{};
 	inline int timeWarp{ 1 };
 	inline Planet* planets[total_planets]{};
 
 	void init(const char*);
-	int load(void*);
 	void handleEvents();
 	void draw();
 	void quit();

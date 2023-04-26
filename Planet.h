@@ -1,8 +1,6 @@
 #ifndef PLANET_H
 #define PLANET_H
 
-#include <SDL.h>
-
 constexpr double G{ 6.67428e-11 };
 
 class Planet
@@ -14,13 +12,11 @@ private:
 	double M{};
 	double e{};
 	double n{};
-	SDL_FPoint pos{};
-	SDL_Color color{};
 	Planet* parent{};
 public:
-	Planet(Planet*, double, int, double, double, SDL_Color);
+	Planet(Planet*, double, int, double, double);
 	void move(double);
-	void draw(SDL_Renderer*, SDL_Texture*, double, double, double, double, SDL_DisplayMode*, const Planet* const) const;
+	void draw() const;
 	Planet* getParent() const;
 };
 
