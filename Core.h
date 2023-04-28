@@ -11,16 +11,6 @@
 
 namespace Core
 {
-	inline struct
-	{
-		double dist{ 5e10 };
-		double pitch{};
-		double yaw{};
-		int focus{};
-		double speed{ 1 };
-		double fov{ 90 };
-	} camera{};
-
 	inline GLFWwindow* window{};
 	inline GLFWvidmode* screen{};
 
@@ -28,6 +18,15 @@ namespace Core
 	inline std::chrono::high_resolution_clock::time_point currTime;
 	inline bool running{};
 	inline std::vector<Planet*> planets{};
+
+	constexpr inline float vertices[]
+	{
+		-0.5f, -0.5f,  0.0f,
+		 0.5f, -0.5f,  0.0f,
+		 0.0f,  0.5f,  0.0f
+	};
+
+	inline GLuint VBO{};
 
 	void init(const char*);
 	void handleEvents();

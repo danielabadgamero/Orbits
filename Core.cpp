@@ -23,6 +23,10 @@ void Core::init(const char* title)
 	glfwSetFramebufferSizeCallback(window, (GLFWframebuffersizefun)([](GLFWwindow*, int w, int h) { glViewport(0, 0, w, h); }));
 	glfwSetWindowCloseCallback(window, (GLFWwindowclosefun)([](GLFWwindow*) { running = false; }));
 
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 	running = true;
 }
 
@@ -32,6 +36,9 @@ void Core::handleEvents()
 	{
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			running = false;
+
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
