@@ -9,7 +9,7 @@
 
 #include "Planet.h"
 
-namespace Orbits
+namespace Core
 {
 	inline struct
 	{

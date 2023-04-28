@@ -6,7 +6,7 @@
 
 #include "Core.h"
 
-void Orbits::init(const char* title)
+void Core::init(const char* title)
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -26,16 +26,19 @@ void Orbits::init(const char* title)
 	running = true;
 }
 
-void Orbits::handleEvents()
+void Core::handleEvents()
 {
 	while (running)
 	{
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			running = false;
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 }
 
-void Orbits::draw()
+void Core::draw()
 {
 	prevTime = currTime;
 	currTime = std::chrono::high_resolution_clock::now();
@@ -46,7 +49,7 @@ void Orbits::draw()
 			planet->move(dt);
 }
 
-void Orbits::quit()
+void Core::quit()
 {
 	glfwTerminate();
 }

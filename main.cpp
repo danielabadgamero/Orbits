@@ -2,15 +2,15 @@
 
 int main(int, char**)
 {
-	Orbits::init("Orbits++");
+	Core::init("Orbits++");
 
-	while (Orbits::running)
+	while (Core::running)
 	{
-		Orbits::handleEvents();
-		Orbits::draw();
+		Core::handleEvents();
+		Core::draw();
 	}
 
-	Orbits::quit();
+	Core::quit();
 
 	return 0;
 }
